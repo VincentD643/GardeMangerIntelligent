@@ -1,71 +1,59 @@
 import React from "react";
+import { Provider } from 'react-redux';
+import store from "./reducers/store"
 import {
-  Text,
-  Link,
-  HStack,
-  Center,
-  Heading,
-  Switch,
-  useColorMode,
   NativeBaseProvider,
   extendTheme,
-  VStack,
-  Code,
+  Icon
 } from "native-base";
-import NativeBaseIcon from "./components/NativeBaseIcon";
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { MaterialCommunityIcons } from "@expo/vector-icons"
+import HomeScreen from "./components/HomeScreen";
+import GroceryList from "./components/GroceryList"
+import History from "./components/History"
 
 // Define the config
 const config = {
-  useSystemColorMode: false,
+  useSystemColorMode: true,
   initialColorMode: "dark",
 };
 
 // extend the theme
 export const theme = extendTheme({ config });
+const Tab = createBottomTabNavigator();
 
+//https://reactnavigation.org/docs/bottom-tab-navigator/ pour les options du tab nav
+//https://icons.expo.fyi/ pour les icones, essayez d'utiliser MaterialCommunityIcons
 export default function App() {
   return (
-    <NativeBaseProvider>
-      <Center
-        _dark={{ bg: "blueGray.900" }}
-        _light={{ bg: "blueGray.50" }}
-        px={4}
-        flex={1}
-      >
-        <VStack space={5} alignItems="center">
-          <NativeBaseIcon />
-          <Heading size="lg">Welcome to NativeBase</Heading>
-          <HStack space={2} alignItems="center">
-            <Text>Edit</Text>
-            <Code>App.js</Code>
-            <Text>and save to reload.</Text>
-          </HStack>
-          <Link href="https://docs.nativebase.io" isExternal>
-            <Text color="primary.500" underline fontSize={"xl"}>
-              Learn NativeBase
-            </Text>
-          </Link>
-          <ToggleDarkMode />
-        </VStack>
-      </Center>
-    </NativeBaseProvider>
-  );
-}
-
-// Color Switch Component
-function ToggleDarkMode() {
-  const { colorMode, toggleColorMode } = useColorMode();
-  return (
-    <HStack space={2} alignItems="center">
-      <Text>Dark</Text>
-      <Switch
-        isChecked={colorMode === "light" ? true : false}
-        onToggle={toggleColorMode}
-        aria-label={
-          colorMode === "light" ? "switch to dark mode" : "switch to light mode"
-        }
-      />
-      <Text>Light</Text>
-    </HStack>
+    <Provider store={store}>
+      <NativeBaseProvider>
+        <NavigationContainer>
+          <Tab.Navigator>
+            <Tab.Screen  name="Home" component={HomeScreen} options={{
+              title: 'Garde manger',
+              tabBarIcon: ({ color, size }) => (
+                <Icon as={MaterialCommunityIcons} name="food-apple" color={color} size={size} />
+              ),
+              }}/>
+            <Tab.Screen name="GroceryList" component={GroceryList} options={{
+              title: 'Liste d\'épicerie',
+              tabBarIcon: ({ color, size }) => (
+                <Icon as={MaterialCommunityIcons} name="format-list-bulleted" color={color} size={size} />
+              ),
+              }}
+          />
+            <Tab.Screen name="History" component={History} options={{
+              title: 'Historique',
+              tabBarIcon: ({ color, size }) => (
+                <Icon as={MaterialCommunityIcons} name="history" color={color} size={size} />
+              ),
+              }}
+            />
+          </Tab.Navigator>
+        </NavigationContainer>
+      </NativeBaseProvider>
+    </Provider>
   );
 }
