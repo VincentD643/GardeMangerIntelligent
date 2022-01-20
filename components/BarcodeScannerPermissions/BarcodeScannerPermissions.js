@@ -6,7 +6,7 @@ import 'react-native-reanimated'
 import { Container, Checkbox, VStack, Text, Center, Flex } from "native-base";
 import { setCameraPermission, setMicrophonePermission } from "../../reducers/permissionsReducer"
 import { StyledBarcodePermissionsView, StyledHeadingPrimaryText, StyledHeadingAppName } from "./styled";
-import BarcodeScannerCamera from '../BarcodeScannerCamera';
+import BarcodeScannerCamera from '../BarcodeScannerCamera'; //even though this is not used, we need it for using navigation
 
 
 const BarcodeScannerPermissions = ({ navigation }) => {

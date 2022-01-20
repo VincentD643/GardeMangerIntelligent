@@ -13,11 +13,12 @@ import { createNativeStackNavigator  } from '@react-navigation/native-stack';
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import store from "./reducers/store"
 import colors from "./theme"
-import HomeScreen from "./components/HomeScreen";
+import GardeManger from "./components/GardeManger";
 import GroceryList from "./components/GroceryList"
 import History from "./components/History"
 import BarcodeScannerPermissions from "./components/BarcodeScannerPermissions"
 import BarcodeScannerCamera from "./components/BarcodeScannerCamera";
+import ProductForm from "./components/ProductForm";
 
 export const config = {
   ...colors,
@@ -30,7 +31,22 @@ let persistor = persistStore(store);
 const theme = extendTheme(config);
 const Tab = createBottomTabNavigator();
 
-// Inner navigation for Scanner tab
+// Inner navigation for GardeManger tab
+const ProductFormStack = createNativeStackNavigator();
+const GardeMangerScreen = () => {
+    return (
+      <ProductFormStack.Navigator
+        screenOptions={{
+          headerShown: false
+        }}>
+        <ProductFormStack.Screen name="GardeManger" component={GardeManger} />
+        <ProductFormStack.Screen name="ProductForm" component={ProductForm} />
+        <ProductFormStack.Screen name="CameraScreen" component={CameraScreen} />
+      </ProductFormStack.Navigator>
+    );
+}
+
+// Inner navigation for Scanning and permissions
 const CameraStack = createNativeStackNavigator();
 const CameraScreen = () => {
     return (
@@ -56,7 +72,7 @@ export default function App() {
               screenOptions={{
                 headerShown: false
               }}>
-              <Tab.Screen  name="Home" component={HomeScreen} options={{
+              <Tab.Screen  name="GardeMangerScreen" component={GardeMangerScreen} options={{
                 title: 'Garde manger',
                 tabBarIcon: ({ color, size }) => (
                   <Icon as={MaterialCommunityIcons} name="food-apple" color={color} size={size} />
@@ -73,13 +89,6 @@ export default function App() {
                 title: 'Product history',
                 tabBarIcon: ({ color, size }) => (
                   <Icon as={MaterialCommunityIcons} name="history" color={color} size={size} />
-                ),
-                }}
-              />
-              <Tab.Screen name="Scanner" component={CameraScreen} options={{
-                title: 'Scanner',
-                tabBarIcon: ({ color, size }) => (
-                  <Icon as={MaterialCommunityIcons} name="camera" color={color} size={size} />
                 ),
                 }}
               />
