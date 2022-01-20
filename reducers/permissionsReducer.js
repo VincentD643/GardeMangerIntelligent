@@ -3,21 +3,20 @@ import { createSlice } from '@reduxjs/toolkit'
 const slice = createSlice({
   name: 'permissions',
   initialState: {
-    camera: false,
+    camera: null,
+    microphone: null
   },
   reducers: {
     setCameraPermission: (state, action) => {
       state.camera = action.payload;
+    },
+    setMicrophonePermission: (state, action) => {
+      state.microphone = action.payload
     }
   },
 });
-export default slice.reducer
+
 // Actions
-const { setCameraPermission } = slice.actions
-export const cameraPermissions = ({ permission }) => async dispatch => {
-  try {
-    dispatch(setCameraPermission({permission}));
-  } catch (e) {
-    return console.error(e.message);
-  }
-}
+export const { setCameraPermission, setMicrophonePermission } = slice.actions
+
+export default slice.reducer

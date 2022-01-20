@@ -5,9 +5,6 @@ import {
   Text
 } from "native-base"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
-import BarcodeScanner from "../BarcodeScanner/BarcodeScanner";
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import StyledHomeScreen from "./styled";
 
 const GroceryListScreen = ({ navigation }) => {
@@ -47,28 +44,11 @@ const GroceryListScreen = ({ navigation }) => {
     
   );
 }
-const BarcodeScannerScreen = ({ navigation }) => {
-  return (
-    <BarcodeScanner/>
-  )
-}
 
-const Stack = createNativeStackNavigator();
-function MyStack() {
-  return (
-    <Stack.Navigator initialRouteName="Home">
-      <Stack.Screen name="GroceryListScreen" component={GroceryListScreen} />
-      <Stack.Screen name="BarcodeScannerScreen" component={BarcodeScannerScreen} />
-    </Stack.Navigator>
-  );
-}
 const HomeScreen = () => {
     return (
       <StyledHomeScreen>
         <Text>Test</Text>
-        <NavigationContainer independent={true}>
-           <MyStack/>
-        </NavigationContainer>
       </StyledHomeScreen>
     )
 };
