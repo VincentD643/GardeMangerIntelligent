@@ -19,10 +19,12 @@
   "dependencies": {
     "@babel/preset-typescript": "^7.16.7",
     "@expo/vector-icons": "^12.0.0",
+    "@react-native-async-storage/async-storage": "^1.15.15",
     "@react-native-community/masked-view": "^0.1.11",
     "@react-navigation/bottom-tabs": "^6.0.9",
     "@react-navigation/native": "^6.0.6",
     "@react-navigation/native-stack": "^6.2.5",
+    "@react-navigation/stack": "^6.0.11",
     "@reduxjs/toolkit": "^1.7.1",
     "expo": "~42.0.0",
     "expo-splash-screen": "~0.11.2",
@@ -41,6 +43,7 @@
     "react-native-vision-camera": "^2.12.0",
     "react-native-web": "~0.13.12",
     "react-redux": "^7.2.6",
+    "redux-persist": "^6.0.0",
     "styled-components": "^5.3.3",
     "styled-system": "^5.1.5"
   },
