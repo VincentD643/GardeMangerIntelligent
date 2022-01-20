@@ -2,13 +2,7 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  persistReducer,
-  FLUSH,
-  REHYDRATE,
-  PAUSE,
-  PERSIST,
-  PURGE,
-  REGISTER,
+  persistReducer
 } from 'redux-persist'
 import permissionsReducer from './permissionsReducer'
 import gardeMangerReducer from './gardeMangerReducer'
@@ -30,9 +24,7 @@ const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({
-      serializableCheck: {
-        ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER],
-      },
+      serializableCheck: false
     }),
 })
 

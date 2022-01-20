@@ -10,10 +10,17 @@ const slice = createSlice({
     addProduct: (state, action) => {
         state.products = [...state.products, action.payload]
     },
+    editProduct: (state, action) => {
+      state.products = state.products.map(product => {
+        if (product.id === action.payload.id) {
+          return action.payload;
+        }
+        return product;
+      })
+    },
     //we make a temp object in case another action access the state at the same time
     removeProduct: (state, action) => {
-        const next = [...state.products]
-        state.products = next.filter(product => product != action.payload)
+        state.products = action.payload
     },
     addContainer: (state, action) => {
         state.containers = [...state.containers, action.payload]
@@ -26,6 +33,6 @@ const slice = createSlice({
 });
 
 // Actions
-export const { addProduct, removeProduct, addContainer, removeContainer } = slice.actions
+export const { addProduct, editProduct, removeProduct, addContainer, removeContainer } = slice.actions
 
 export default slice.reducer
