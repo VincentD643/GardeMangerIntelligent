@@ -2,7 +2,6 @@ import { configureStore } from '@reduxjs/toolkit'
 import { combineReducers } from 'redux'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
-  persistStore,
   persistReducer,
   FLUSH,
   REHYDRATE,
@@ -12,9 +11,11 @@ import {
   REGISTER,
 } from 'redux-persist'
 import permissionsReducer from './permissionsReducer'
+import gardeMangerReducer from './gardeMangerReducer'
 
 const reducer = combineReducers({
   permissionsReducer,
+  gardeMangerReducer
 })
 
 const persistConfig = {
