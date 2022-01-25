@@ -16,7 +16,6 @@ import colors from "./theme"
 import GardeManger from "./components/GardeManger";
 import GroceryList from "./components/GroceryList"
 import History from "./components/History"
-import BarcodeScannerPermissions from "./components/BarcodeScannerPermissions"
 import BarcodeScannerCamera from "./components/BarcodeScannerCamera";
 import ProductForm from "./components/ProductForm";
 
@@ -41,22 +40,8 @@ const GardeMangerScreen = () => {
         }}>
         <ProductFormStack.Screen name="GardeManger" component={GardeManger} />
         <ProductFormStack.Screen name="ProductForm" component={ProductForm} />
-        <ProductFormStack.Screen name="CameraScreen" component={CameraScreen} />
+        <ProductFormStack.Screen name="BarcodeScannerCamera" component={BarcodeScannerCamera} />
       </ProductFormStack.Navigator>
-    );
-}
-
-// Inner navigation for Scanning and permissions
-const CameraStack = createNativeStackNavigator();
-const CameraScreen = () => {
-    return (
-      <CameraStack.Navigator
-        screenOptions={{
-          headerShown: false
-        }}>
-        <CameraStack.Screen name="BarcodeScannerPermissions" component={BarcodeScannerPermissions} />
-        <CameraStack.Screen name="BarcodeScannerCamera" component={BarcodeScannerCamera} />
-      </CameraStack.Navigator>
     );
 }
 

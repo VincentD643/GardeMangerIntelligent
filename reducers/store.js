@@ -4,11 +4,9 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   persistReducer
 } from 'redux-persist'
-import permissionsReducer from './permissionsReducer'
 import gardeMangerReducer from './gardeMangerReducer'
 
 const reducer = combineReducers({
-  permissionsReducer,
   gardeMangerReducer
 })
 

@@ -24,18 +24,29 @@ import { addProduct, editProduct } from "../../reducers/gardeMangerReducer";
 import StyledHistory from "./styled";
 
 const ProductForm = ({ navigation, route }) => {
+    
+    //product
     const product = route?.params?.product;
+    console.log("product", product)
     const isEdit = route?.params?.isEdit ? true : false
-    console.log("isEdit", isEdit)
+    //qty
     const [quantity, setQuantity] = useState(product?.quantity ? product.quantity :  1);
+    //product name
     const [name, setName] = useState(product?.product_name ? product.product_name: undefined);
+    //product name errors
     const [errors, setErrors] = useState({});
+    //expiration date
     const [isExpirationTracked, setIsExpirationTracker] = useState(product?.expiration_date ? true : false);
     const [date, setDate] = useState(
         product?.expiration_date ? new Date(product?.expiration_date) : new Date()
         );
     const [mode, setMode] = useState('date');
     const [show, setShow] = useState(false);
+    //image
+    const [image, setImage] = useState(product?.product_url ? product.product_url: undefined);
+    //nutriments
+    const [nutriments, setNutriments] = useState(product?.nutriments ? product.nutriments: undefined); 
+
     const dispatch = useDispatch();
     
     //Validates the form 
@@ -63,8 +74,11 @@ const ProductForm = ({ navigation, route }) => {
             product_name: name,
         }
         
+        if (image) {
+            formData = {...formData, product_url: image}
+        }
         if (isExpirationTracked) {
-            formData = {...formData, expiration_date: date}
+            formData = {...formData, expiration_date: date.toString()}
         }
         if (!isEdit) {
             validate() ? dispatch(addProduct({...formData, id: uuidv4()})) : console.log('Validation Failed');
@@ -128,7 +142,7 @@ const ProductForm = ({ navigation, route }) => {
         return (
             <FormControl>
                 <FormControl.Label _text={{bold: true}}>Quantity</FormControl.Label>
-                <NumberInput  defaultValue="1" min="1" onChange={(value) => setQuantity(value)}>
+                <NumberInput  defaultValue={quantity} min="1" onChange={(value) => setQuantity(value)}>
                 <NumberInputField />
                 <NumberInputStepper>
                     <NumberIncrementStepper />

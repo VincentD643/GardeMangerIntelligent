@@ -1,23 +1,55 @@
-import * as React from 'react';
-import { StyleSheet } from "react-native"
-import { Camera, useCameraDevices, useFrameProcessor } from 'react-native-vision-camera';
+import React, { useState, useEffect } from 'react';
+import { Text, View, StyleSheet, Button } from 'react-native';
+import { BarCodeScanner } from 'expo-barcode-scanner';
+import axios from 'axios'
 
-import { useIsFocused } from "@react-navigation/native"
-import { Container, Checkbox, VStack, Text, Center, Heading, Box, Stack, Flex } from "native-base";
-import { StyledBarcodeCameraView  } from './styled';
+export default function BarcodeScannerCamera() {
+  const [hasPermission, setHasPermission] = useState(null);
+  const [scanned, setScanned] = useState(false);
 
-const BarcodeScannerCamera = () => {
-  const devices = useCameraDevices()
-  const device = devices.back
-  const isFocused = useIsFocused()
-  if (device == null) return <Text>error</Text>
+  useEffect(() => {
+    (async () => {
+      const { status } = await BarCodeScanner.requestPermissionsAsync();
+      setHasPermission(status === 'granted');
+    })();
+  }, []);
+
+  const handleBarCodeScanned = ({ type, data }) => {
+    setScanned(true);
+    const response = axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
+    const product = {
+      product_name: response.product.product_name,
+      product_url: response.product.selected_images.front.thumb.en,
+      nutriments: response.product.nutriments
+    }
+    console.log(product)
+    navigation.navigate('ProductForm', {
+      product,
+    })
+  };
+
+  if (hasPermission === null) {
+    return <Text>Requesting for camera permission</Text>;
+  }
+  if (hasPermission === false) {
+    return <Text>No access to camera</Text>;
+  }
+
   return (
-    <Camera
-      style={StyleSheet.absoluteFill}
-      device={device}
-      isActive={isFocused}
-    />
-  )
+    <View style={styles.container}>
+      <BarCodeScanner
+        onBarCodeScanned={scanned ? undefined : handleBarCodeScanned}
+        style={StyleSheet.absoluteFillObject}
+      />
+      {scanned && <Button title={'Tap to Scan Again'} onPress={() => setScanned(false)} />}
+    </View>
+  );
 }
 
-export default BarcodeScannerCamera;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+});
