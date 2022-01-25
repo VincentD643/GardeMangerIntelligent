@@ -59,7 +59,6 @@ const SwipeList = () => {
       <Box>
       <Pressable onPress={() => navigation.navigate('ProductForm', {
             product: item,
-            navigation,
             isEdit: true
           })} 
         bg="white">
@@ -169,7 +168,7 @@ const GardeManger = ({ navigation }) => {
                 )
               }}
             >
-                <Menu.Item value="Roboto" onPress={() => navigation.navigate('CameraScreen')}>Scan Product</Menu.Item>
+                <Menu.Item value="Roboto" onPress={() => navigation.navigate('BarcodeScannerCamera')}>Scan Product</Menu.Item>
                 <Divider/>
                 <Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Add Product Manually</Menu.Item>
                 <Divider/>
