@@ -27,12 +27,12 @@ const ProductForm = ({ navigation, route }) => {
     
     //product
     const product = route?.params?.product;
-    console.log("product", product)
+
     const isEdit = route?.params?.isEdit ? true : false
     //qty
     const [quantity, setQuantity] = useState(product?.quantity ? product.quantity :  1);
     //product name
-    const [name, setName] = useState(product?.product_name ? product.product_name: undefined);
+    const [name, setName] = useState(product?.product_name ? product.product_name : undefined);
     //product name errors
     const [errors, setErrors] = useState({});
     //expiration date
@@ -69,6 +69,7 @@ const ProductForm = ({ navigation, route }) => {
 
     // Submits the form
     const onSubmit = () => {
+        console.log("name2", name)
         let formData = {
             quantity,
             product_name: name,
@@ -80,12 +81,13 @@ const ProductForm = ({ navigation, route }) => {
         if (isExpirationTracked) {
             formData = {...formData, expiration_date: date.toString()}
         }
+        console.log("formdata", formData)
         if (!isEdit) {
             validate() ? dispatch(addProduct({...formData, id: uuidv4()})) : console.log('Validation Failed');
         } else {
             validate() ? dispatch(editProduct({...formData, id: product.id})) : console.log('Validation Failed');
         }
-        navigation.goBack()
+        navigation.navigate('GardeManger')
     };
     
     //Edit the state when expiration date is set 
