@@ -68,7 +68,7 @@ const SwipeList = () => {
           py="2"
           >
             <HStack alignItems="center" space={3}>
-              <Avatar size="48px" source={item.product_url}>NA</Avatar>
+              <Avatar size="48px" source={{uri: item.product_url}}>NA</Avatar>
               <VStack>
                 <Text color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
                   {item.product_name}
