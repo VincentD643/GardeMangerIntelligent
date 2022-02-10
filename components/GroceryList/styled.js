@@ -1,10 +1,18 @@
 import styled from "styled-components"
-import { View } from "native-base"
+import { Box, View } from "native-base"
 
-const StyledGroceryList = styled(View)`
+const StyledGroceryList = styled(Box)`
     background-color: white;
     align-items: center;
     justify-content: center;
+    width: 100%;
+    flex: 1;
 `
 
-export default StyledGroceryList
+const HiddenItemView = styled(View)`
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+`
+
+export {StyledGroceryList, HiddenItemView}

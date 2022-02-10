@@ -5,9 +5,11 @@ import {
   persistReducer
 } from 'redux-persist'
 import gardeMangerReducer from './gardeMangerReducer'
+import groceryListReducer from "./groceryListReducer";
 
 const reducer = combineReducers({
-  gardeMangerReducer
+  gardeMangerReducer,
+  groceryListReducer
 })
 
 const persistConfig = {
