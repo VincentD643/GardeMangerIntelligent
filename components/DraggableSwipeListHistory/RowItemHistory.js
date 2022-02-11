@@ -7,35 +7,22 @@ import {
   Pressable,
   Avatar,
   Spacer,
-  Icon
 } from "native-base"
 import {
   StyleSheet,
   TouchableOpacity,
-  Dimensions
 } from "react-native";
 import SwipeableItem from "react-native-swipeable-item";
 import { ScaleDecorator} from "react-native-draggable-flatlist";
-import UnderlayLeft from "./UnderLayLeft"
-import UnderlayRight from "./UnderLayRight"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { useDispatch } from 'react-redux';
-import { closeOpenContainer } from "../../reducers/gardeMangerReducer";
+import UnderLayLeftHistory from "./UnderLayLeftHistory"
+import UnderLayRightHistory from "./UnderLayRightHistory"
 
-const windowW = Dimensions.get('window').width;
-const windowH = Dimensions.get('window').height;
-
-const RowItem = ({ item, drag, itemRefs, navigation }) => {
-    const dispatch = useDispatch()
+const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
     const formatDate = (date) => {
       const newDate = new Date(date)
       return `${newDate.getDate()}/${newDate.getMonth() +
         1}/${newDate.getFullYear()}`;
     };
-
-    if (!item.isContainer && item.isHidden) {
-      return null
-    }
 
     return (
       <ScaleDecorator>
@@ -55,34 +42,14 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
             });
           }
         }}
-        renderUnderlayLeft={() => !item.isContainer && <UnderlayLeft item={item} />}
-        renderUnderlayRight={() => <UnderlayRight item={item} />}
-        snapPointsLeft={item.isContainer ? [0] : [50]}
+        renderUnderlayLeft={() => <UnderLayLeftHistory item={item} navigation={navigation} />}
+        renderUnderlayRight={() => <UnderLayRightHistory item={item} />}
+        snapPointsLeft={[120]}
         snapPointsRight={[50]}
       >
         <View style={styles.row}>
-          
           <TouchableOpacity onPressIn={drag}>
-          {item.isContainer ? 
-             <Pressable
-                style={styles.container}
-                onPress={() => dispatch(closeOpenContainer(item))}  
-                _pressed={{
-                  opacity: 0.5
-                }} 
-                justifyContent="center">
-                  <HStack alignItems="center">
-                      <Text style={styles.containerTitle}>{item.container_name}</Text>
-                      <Spacer />
-                      <Icon style={styles.containerIcon} as={<MaterialCommunityIcons name={item.isClosed ? "chevron-up": "chevron-down"}/>} color="black" />
-                    </HStack>
-              </Pressable>
-              
-          :
-          <Pressable onPressIn={drag} onPress={() => navigation.navigate('ProductForm', {
-            product: item,
-            isEdit: true
-          })}>
+          <Pressable onPressIn={drag}>
              <HStack style={styles.item} alignItems="center" space={3} >
                 <Avatar size="48px" source={{uri: item.product_url}}>NA</Avatar>
                 <VStack>
@@ -99,7 +66,7 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
                   Qty: {item.quantity}
                 </Text>
               </HStack>
-          </Pressable>}
+          </Pressable>
          </TouchableOpacity>
         </View>
       </SwipeableItem>
@@ -141,19 +108,7 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
       backgroundColor: "tomato",
       justifyContent: "flex-end",
     },
-    container: {
-      width: windowW,
-      height: 50,
-
-      padding: 15
-    },
-    containerIcon: {
-      alignSelf: 'flex-end',
-    },
-    containerTitle: {
-      color: 'black',
-    }
   });
   
 
-  export default RowItem
+  export default RowItemHistory

@@ -4,6 +4,7 @@ import { Camera } from 'expo-camera';
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { setItems } from '../../reducers/gardeMangerReducer';
+import { setHistory } from '../../reducers/historyReducer';
 
 export default function BarcodeScannerCamera({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -34,7 +35,7 @@ export default function BarcodeScannerCamera({navigation}) {
             //dispatch
             navigation.navigate('GroceryList')
           } else {
-            //dispatch
+            dispatch(setHistory(jsonData))
             navigation.navigate('History')
           }
         } else {

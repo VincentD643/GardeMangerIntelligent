@@ -71,7 +71,7 @@ export default function App() {
               <Tab.Screen name="GroceryList" component={GroceryList} options={{
                 title: 'Grocery list',
                 tabBarIcon: ({ color, size }) => (
-                  <Icon as={MaterialCommunityIcons} name="format-list-bulleted" color={color} size={size} />
+                  <Icon as={MaterialCommunityIcons} name="cart-outline" color={color} size={size} />
                 ),
                 }}
             />
