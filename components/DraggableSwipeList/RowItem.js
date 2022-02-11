@@ -26,8 +26,6 @@ const windowW = Dimensions.get('window').width;
 const windowH = Dimensions.get('window').height;
 
 const RowItem = ({ item, drag, isActive, itemRefs, navigation }) => {
-
-    
     const dispatch = useDispatch()
     const formatDate = (date) => {
       const newDate = new Date(date)
