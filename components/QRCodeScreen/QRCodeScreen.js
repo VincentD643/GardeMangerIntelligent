@@ -19,12 +19,13 @@ const QRCodeScreen = ({ navigation, route }) => {
     const type = route?.params?.type;
     if (type == "GardeManger") {
       // we want to deep copy for modifying array
-       items = JSON.parse(JSON.stringify(useSelector((state) => state.gardeMangerReducer.items)))
-       items.push({type: "GardeManger", isImport: true})
+      items = JSON.parse(JSON.stringify(useSelector((state) => state.gardeMangerReducer.items)))
+      items.push({type: "GardeManger", isImport: true})
     } else if (type === "GroceryList") {
         //listeepicerie
     } else {
-        //history
+      items = JSON.parse(JSON.stringify(useSelector((state) => state.historyReducer.items)))
+      items.push({type: "History", isImport: true})
     }
     const qrData = JSON.stringify(items)
   
@@ -38,7 +39,7 @@ const QRCodeScreen = ({ navigation, route }) => {
             size={300}
             value={qrData}
           />
-          <Text style={styles.saveButton} onPress={() => console.log("hello world")}>Warning ! Previous data will be overwritten.</Text>
+          <Text style={styles.warningText}>Warning ! Previous data will be overwritten.</Text>
         </Center>
       </View>
         
@@ -52,7 +53,7 @@ const styles = StyleSheet.create({
   qr: {
     top: windowH/5
   },
-  saveButton: {
+  warningText: {
     top: 10
   }
 });
