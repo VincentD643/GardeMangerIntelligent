@@ -18,6 +18,7 @@ import GroceryList from "./components/GroceryList"
 import History from "./components/History"
 import BarcodeScannerCamera from "./components/BarcodeScannerCamera";
 import ProductForm from "./components/ProductForm";
+import ContainerForm from "./components/ContainerForm"
 
 export const config = {
   ...colors,
@@ -40,6 +41,7 @@ const GardeMangerScreen = () => {
         }}>
         <ProductFormStack.Screen name="GardeManger" component={GardeManger} />
         <ProductFormStack.Screen name="ProductForm" component={ProductForm} />
+        <ProductFormStack.Screen name="ContainerForm" component={ContainerForm}/>
         <ProductFormStack.Screen name="BarcodeScannerCamera" component={BarcodeScannerCamera} />
       </ProductFormStack.Navigator>
     );
