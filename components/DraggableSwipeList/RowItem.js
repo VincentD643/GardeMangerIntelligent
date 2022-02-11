@@ -12,6 +12,7 @@ import {
 import {
   StyleSheet,
   TouchableOpacity,
+  Dimensions
 } from "react-native";
 import SwipeableItem from "react-native-swipeable-item";
 import { ScaleDecorator} from "react-native-draggable-flatlist";
@@ -21,8 +22,12 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useDispatch } from 'react-redux';
 import { closeOpenContainer } from "../../reducers/gardeMangerReducer";
 
+const windowW = Dimensions.get('window').width;
+const windowH = Dimensions.get('window').height;
 
 const RowItem = ({ item, drag, isActive, itemRefs, navigation }) => {
+
+    
     const dispatch = useDispatch()
     const formatDate = (date) => {
       const newDate = new Date(date)
@@ -139,7 +144,7 @@ const RowItem = ({ item, drag, isActive, itemRefs, navigation }) => {
       justifyContent: "flex-end",
     },
     container: {
-      width: 380,
+      width: windowW,
       height: 50,
 
       padding: 15
