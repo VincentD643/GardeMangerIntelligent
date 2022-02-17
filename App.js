@@ -19,6 +19,7 @@ import History from "./components/History"
 import BarcodeScannerCamera from "./components/BarcodeScannerCamera";
 import ProductForm from "./components/ProductForm";
 import ContainerForm from "./components/ContainerForm"
+import Notification from "./components/Notification";
 
 export const config = {
   ...colors,
@@ -43,6 +44,7 @@ const GardeMangerScreen = () => {
         <ProductFormStack.Screen name="ProductForm" component={ProductForm} />
         <ProductFormStack.Screen name="ContainerForm" component={ContainerForm}/>
         <ProductFormStack.Screen name="BarcodeScannerCamera" component={BarcodeScannerCamera} />
+        <ProductFormStack.Screen name="Notification" component={Notification} />
       </ProductFormStack.Navigator>
     );
 }
@@ -54,7 +56,8 @@ export default function App() {
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
         <NativeBaseProvider contentContainerStyle={{ flexGrow: 1 }} theme={theme}>
-          <NavigationContainer>
+            <Notification/>
+            <NavigationContainer>
             <Tab.Navigator
               screenOptions={{
                 headerShown: false
