@@ -1,11 +1,12 @@
 import React from "react";
+import { View, Text } from 'react-native' 
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'
 import {
   NativeBaseProvider,
   extendTheme,
-  Icon
+  Icon,
 } from "native-base";
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
@@ -19,6 +20,7 @@ import History from "./components/History"
 import BarcodeScannerCamera from "./components/BarcodeScannerCamera";
 import ProductForm from "./components/ProductForm";
 import ContainerForm from "./components/ContainerForm"
+import QRCodeScreen from "./components/QRCodeScreen"
 import Notification from "./components/Notification";
 
 export const config = {
@@ -44,7 +46,7 @@ const GardeMangerScreen = () => {
         <ProductFormStack.Screen name="ProductForm" component={ProductForm} />
         <ProductFormStack.Screen name="ContainerForm" component={ContainerForm}/>
         <ProductFormStack.Screen name="BarcodeScannerCamera" component={BarcodeScannerCamera} />
-        <ProductFormStack.Screen name="Notification" component={Notification} />
+        <ProductFormStack.Screen name="QRCodeScreen" component={QRCodeScreen}/>
       </ProductFormStack.Navigator>
     );
 }
@@ -54,7 +56,7 @@ const GardeMangerScreen = () => {
 export default function App() {
   return (
     <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
+      <PersistGate loading={<View><Text>Loading...</Text></View>} persistor={persistor}>
         <NativeBaseProvider contentContainerStyle={{ flexGrow: 1 }} theme={theme}>
             <Notification/>
             <NavigationContainer>
@@ -71,7 +73,7 @@ export default function App() {
               <Tab.Screen name="GroceryList" component={GroceryList} options={{
                 title: 'Grocery list',
                 tabBarIcon: ({ color, size }) => (
-                  <Icon as={MaterialCommunityIcons} name="format-list-bulleted" color={color} size={size} />
+                  <Icon as={MaterialCommunityIcons} name="cart-outline" color={color} size={size} />
                 ),
                 }}
             />

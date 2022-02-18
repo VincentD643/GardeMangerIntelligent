@@ -6,7 +6,10 @@ import {
   Fab,
   Divider,
   Menu,
-  View
+  View,
+  HStack,
+  Spacer,
+  Pressable
 } from "native-base"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,7 +21,6 @@ import {
 import DraggableFlatList from "react-native-draggable-flatlist";
 import RowItem from "../DraggableSwipeList/RowItem";
 import { setItems } from "../../reducers/gardeMangerReducer";
-
 
 if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental &&
@@ -40,15 +42,29 @@ const GardeManger = ({ navigation }) => {
     return <RowItem {...RowItemProps} itemRefs={itemRefs} />;
   }, []);
 
-
+  
   return (
     <View style={styles.container}>
     <DraggableFlatList
       ListHeaderComponent={() => {
         return (
-          <Heading p="4" pb="3" size="lg">
+          <HStack style={styles.header}>
+            <Heading p="4" pb="3" size="lg">
             Garde Manger
-          </Heading>
+            </Heading>
+            <Spacer />
+            <Pressable 
+              onPress={() => navigation.navigate('QRCodeScreen', {
+                type: "GardeManger",
+              })}
+              style={styles.shareButton}
+              _pressed={{
+                  opacity: 0.5
+                }} >
+            <Icon style={styles.containerIcon} size="sm" as={<MaterialCommunityIcons name={"share"}/>} color="black" />
+            </Pressable>
+          </HStack>
+          
         )
       }}
       keyExtractor={(item) => item.key}
@@ -88,28 +104,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  row: {
-    flexDirection: 'row',
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    padding: 50,
+  header: {
+    paddingRight: 15,
   },
-  text: {
-    fontWeight: 'bold',
-    color: 'white',
-    fontSize: 32,
-  },
-  underlayRight: {
-    flex: 1,
-    backgroundColor: 'teal',
-    justifyContent: 'flex-start',
-  },
-  underlayLeft: {
-    flex: 1,
-    backgroundColor: 'tomato',
-    justifyContent: 'flex-end',
-  },
+  shareButton: {
+    top: 20,
+  }
+  
 });
 
 export default GardeManger;

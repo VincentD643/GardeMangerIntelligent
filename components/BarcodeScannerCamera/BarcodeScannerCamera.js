@@ -2,6 +2,9 @@ import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import axios from 'axios'
+import { useDispatch } from 'react-redux';
+import { setItems } from '../../reducers/gardeMangerReducer';
+import { setHistory } from '../../reducers/historyReducer';
 
 export default function BarcodeScannerCamera({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -15,12 +18,38 @@ export default function BarcodeScannerCamera({navigation}) {
     })();
   }, []);
   
-  const handleBarCodeScanned = async (data) => {
-    //do the request here
-    //following code is untested but it should probably work
-    let response = null
 
+  const importData = (data) => {
+      const dispatch = useDispatch()
+      let jsonData
+      try{
+        jsonData = JSON.parse(data)
+        const properties = jsonData.at(-1)
+        if (properties.isImport) {
+          let type = properties.type
+          if (type === "GardeManger") {
+            jsonData = jsonData.pop()
+            dispatch(setItems(jsonData))
+            navigation.navigate('GardeManger')
+          } else if (type === "GroceryList") {
+            //dispatch
+            navigation.navigate('GroceryList')
+          } else {
+            dispatch(setHistory(jsonData))
+            navigation.navigate('History')
+          }
+        } else {
+          console.log("Not a data import")
+        }
+      } catch (e) {
+        console.log("Not a data import")
+      }
+  }
+
+  const handleBarCodeScanned = async (data) => {
+    let response = null
     if (!isScanned) {
+      importData(data)
       response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
       setIsScanned(true)
       const product = {

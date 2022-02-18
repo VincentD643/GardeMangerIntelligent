@@ -5,9 +5,11 @@ import {
   persistReducer
 } from 'redux-persist'
 import gardeMangerReducer from './gardeMangerReducer'
+import historyReducer from './historyReducer';
 
 const reducer = combineReducers({
-  gardeMangerReducer
+  gardeMangerReducer,
+  historyReducer
 })
 
 const persistConfig = {
