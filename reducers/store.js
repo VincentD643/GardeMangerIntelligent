@@ -10,8 +10,7 @@ import historyReducer from './historyReducer';
 
 const reducer = combineReducers({
   gardeMangerReducer,
-  groceryListReducer
-  gardeMangerReducer,
+  groceryListReducer,
   historyReducer
 })
 
