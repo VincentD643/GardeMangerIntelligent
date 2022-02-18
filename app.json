@@ -26,7 +26,8 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.LO795.GardeMangerIntelligent",
-      "googleServicesFile": "./google-services.json",
+      "googleServicesFile": "./android/app/google-services.json",
+      "permissions": ["NOTIFICATIONS"],
       "useNextNotificationsApi": true
     },
     "web": {

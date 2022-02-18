@@ -1,42 +1,36 @@
-import GardeManger from "../GardeManger";
-import StyledNotification from "../Notification/styled";
 import {useSelector} from "react-redux";
-import React, {useState, useEffect, useRef, Component} from 'react';
-import {Text, View, Button, Platform} from 'react-native';
-import Device from 'expo-device';
+import React, {useState, useEffect, useRef} from 'react';
+import {Alert, Text, View, Button, Platform} from 'react-native';
 import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications';
 
 
-// const items = useSelector((state) => state.gardeMangerReducer.items)
-//
-// for (let [key, value] of Object.entries(items)) {
-//
-//     console.log(value.expiration_date)
-// }
+Notifications.setNotificationHandler({
+    handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+    }),
+});
+
 const Notification = () => {
-    Notifications.setNotificationHandler({
-        handleNotification: async () => ({
-            shouldShowAlert: true,
-            shouldPlaySound: true,
-            shouldSetBadge: true,
-        }),
-    });
 
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
+    const task = 'BACKGROUND-NOTIFICATION-TASK'
+
 
     useEffect(() => {
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-        // This listener is fired whenever a notification is received while the app is foregrounded
+
         notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-            setNotification(this.notification);
+            setNotification(notification);
         });
 
-        // This listener is fired whenever a user taps on or interacts with a notification (works when app is foregrounded, backgrounded, or killed)
+
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             console.log(response);
         });
@@ -47,6 +41,7 @@ const Notification = () => {
         };
     }, []);
 
+    const message = getExpirationDate(expoPushToken)
     return (
         <View
             style={{
@@ -55,7 +50,7 @@ const Notification = () => {
                 justifyContent: 'space-around',
             }}>
             <Text>Your expo push token: {expoPushToken}</Text>
-            <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+            <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Text>Title: {notification && notification.request.content.title} </Text>
                 <Text>Body: {notification && notification.request.content.body}</Text>
                 <Text>Data: {notification && JSON.stringify(notification.request.content.data)}</Text>
@@ -63,25 +58,34 @@ const Notification = () => {
             <Button
                 title="Press to Send Notification"
                 onPress={async () => {
-                    await sendPushNotification(expoPushToken);
+                    await sendPushNotification(expoPushToken,message);
                 }}
             />
         </View>
 
 
     )
-};
+}
+
+function getExpirationDate(expoPushToken){
+    const items = useSelector((state) => state.gardeMangerReducer.items)
+    let arrayMessage = []
+    for (let [key, value] of Object.entries(items)) {
+
+        arrayMessage.push({
+            to: expoPushToken,
+            sound: 'default',
+            title: "Expiration",
+            body: value.product_name,
+            data: value.expiration_date,
+        })
+    }
+
+    return arrayMessage
+}
 
 // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.dev/notifications
-async function sendPushNotification(expoPushToken) {
-    console.log("semdPush:"+expoPushToken)
-    const message = {
-        to: expoPushToken,
-        sound: 'default',
-        title: 'Original Title',
-        body: 'And here is the body!',
-        data: {someData: 'goes here'},
-    };
+async function sendPushNotification(expoPushToken,message) {
 
     await fetch('https://exp.host/--/api/v2/push/send', {
         method: 'POST',
@@ -92,30 +96,29 @@ async function sendPushNotification(expoPushToken) {
         },
         body: JSON.stringify(message),
     });
+    console.log(JSON.stringify(message))
 }
 
 async function registerForPushNotificationsAsync() {
     let token;
-    if(!Constants.isDevice){
-        alert("MUST BE PHYSICAL DEVICE")
-        return null
+    if (!Constants.isDevice) {
+        return Promise.reject('Must use physical device for Push Notifications');
     }
 
-    const {status} = await Notifications.requestPermissionsAsync()
-    if(status!=="granted"){
-        alert("FAILED TO PUSH TOKEN")
-        return null
+    const status = (await Notifications.requestPermissionsAsync()).status
+    if (status !== "granted") {
+        return Promise.reject("Failed to push token")
     }
     if (Platform.OS === 'android') {
         await Notifications.setNotificationChannelAsync('default', {
             name: 'default',
+            showBadge: true,
             importance: Notifications.AndroidImportance.MAX,
             vibrationPattern: [0, 250, 250, 250],
             lightColor: '#FF231F7C',
         });
     }
     token = (await Notifications.getExpoPushTokenAsync()).data
-    console.log("THIS:"+token)
     return token;
 }
 
