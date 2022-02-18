@@ -6,10 +6,13 @@ import {
 } from 'redux-persist'
 import gardeMangerReducer from './gardeMangerReducer'
 import groceryListReducer from "./groceryListReducer";
+import historyReducer from './historyReducer';
 
 const reducer = combineReducers({
   gardeMangerReducer,
   groceryListReducer
+  gardeMangerReducer,
+  historyReducer
 })
 
 const persistConfig = {

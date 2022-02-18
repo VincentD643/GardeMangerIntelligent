@@ -20,7 +20,7 @@ import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid';
-import { addProduct, editProduct } from "../../reducers/gardeMangerReducer";
+import { addItem, editItem } from "../../reducers/gardeMangerReducer";
 import StyledHistory from "./styled";
 
 const ProductForm = ({ navigation, route }) => {
@@ -83,9 +83,9 @@ const ProductForm = ({ navigation, route }) => {
         }
         console.log("formdata", formData)
         if (!isEdit) {
-            validate() ? dispatch(addProduct({...formData, id: uuidv4()})) : console.log('Validation Failed');
+            validate() ? dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false})) : console.log('Validation Failed');
         } else {
-            validate() ? dispatch(editProduct({...formData, id: product.id})) : console.log('Validation Failed');
+            validate() ? dispatch(editItem({...formData, key: product.key, isContainer: false, isHidden: false})) : console.log('Validation Failed');
         }
         navigation.navigate('GardeManger')
     };
@@ -170,7 +170,7 @@ const ProductForm = ({ navigation, route }) => {
                 <Input
                     w="90%"
                     isDisabled={true}
-                    value={date}
+                    value={formatDate(date)}
                     InputRightElement={
                         <Button isDisabled={!isExpirationTracked} size="xs" rounded="none" w="1/6" h="full" onPress={showDatePicker}>
                         <Icon color="white" as={<MaterialCommunityIcons name="calendar" />} size="sm" />
