@@ -1,9 +1,8 @@
-import {useSelector} from "react-redux";
+//import {useSelector} from "react-redux";
 import React, {useState, useEffect, useRef} from 'react';
-import {Alert, Text, View, Button, Platform} from 'react-native';
+import {Text, View, Button, Platform} from 'react-native';
 import Constants from 'expo-constants'
 import * as Notifications from 'expo-notifications';
-
 
 Notifications.setNotificationHandler({
     handleNotification: async () => ({
@@ -12,24 +11,22 @@ Notifications.setNotificationHandler({
         shouldSetBadge: false,
     }),
 });
-
 const Notification = () => {
 
     const [expoPushToken, setExpoPushToken] = useState('');
     const [notification, setNotification] = useState(false);
     const notificationListener = useRef();
     const responseListener = useRef();
-    const task = 'BACKGROUND-NOTIFICATION-TASK'
 
 
     useEffect(() => {
+
         registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
-
-        notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+        notificationListener.current = Notifications.addNotificationReceivedListener((notification) => {
             setNotification(notification);
+            console.log(notification)
         });
-
 
         responseListener.current = Notifications.addNotificationResponseReceivedListener(response => {
             console.log(response);
@@ -43,12 +40,7 @@ const Notification = () => {
 
     const message = getExpirationDate(expoPushToken)
     return (
-        <View
-            style={{
-                flex: 1,
-                alignItems: 'center',
-                justifyContent: 'space-around',
-            }}>
+        <View>
             <Text>Your expo push token: {expoPushToken}</Text>
             <View style={{alignItems: 'center', justifyContent: 'center'}}>
                 <Text>Title: {notification && notification.request.content.title} </Text>
@@ -59,29 +51,24 @@ const Notification = () => {
                 title="Press to Send Notification"
                 onPress={async () => {
                     await sendPushNotification(expoPushToken,message);
+                    //await schedulePushNotification();
                 }}
             />
         </View>
-
-
     )
 }
 
+
 function getExpirationDate(expoPushToken){
-    const items = useSelector((state) => state.gardeMangerReducer.items)
-    let arrayMessage = []
-    for (let [key, value] of Object.entries(items)) {
-
-        arrayMessage.push({
-            to: expoPushToken,
-            sound: 'default',
-            title: "Expiration",
-            body: value.product_name,
-            data: value.expiration_date,
-        })
+    return{
+        sound: 'default',
+        title: 'sdgsdhx',
+        body: 'And dsgsdgsdgs!',
+        data: {someData: 'asfa hasfasfgasgere'},
+        channelId:'default',
+        priority:'high',
+        to: expoPushToken,
     }
-
-    return arrayMessage
 }
 
 // Can use this function below, OR use Expo's Push Notification Tool-> https://expo.dev/notifications
@@ -96,7 +83,7 @@ async function sendPushNotification(expoPushToken,message) {
         },
         body: JSON.stringify(message),
     });
-    console.log(JSON.stringify(message))
+    // console.log(JSON.stringify(message))
 }
 
 async function registerForPushNotificationsAsync() {
@@ -119,6 +106,7 @@ async function registerForPushNotificationsAsync() {
         });
     }
     token = (await Notifications.getExpoPushTokenAsync()).data
+    console.log(token)
     return token;
 }
 
