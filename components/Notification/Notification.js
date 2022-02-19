@@ -2,8 +2,10 @@ import {useSelector} from "react-redux";
 import React, {useState, useEffect, useRef} from 'react';
 import {Text, View, Button, Platform} from 'react-native';
 import PushNotification from "react-native-push-notification";
+import moment from "moment";
 
-// Must be outside of any component LifeCycle (such as `componentDidMount`).
+const LIMIT_EXPIRATION_IN_DAYS = 7;
+
 PushNotification.configure({
 
     // (required) Called when a remote is received or opened, or local notification is opened
@@ -26,12 +28,12 @@ const Notification = () => {
                 channelName: "Garde Manger Channel"
             }
         )
-    }, [])
+    }, []);
 
     return (
         <View>
             <Button
-                title="Press to Send Notification"
+                title="Obtenir les produits qui expire bientôt"
                 onPress={async () => {
                     await pushNotification(itemList)
                 }}
@@ -40,14 +42,13 @@ const Notification = () => {
     )
 }
 
-function getExpiredItem(){
+function getExpiredItem() {
     let itemList = []
     const items = useSelector((state) => state.gardeMangerReducer.items)
 
     for (let [key, value] of Object.entries(items)) {
-
         itemList.push({
-            expiration_date:value.expiration_date,
+            expiration_date: value.expiration_date,
             product: value.product_name
         })
     }
@@ -56,17 +57,24 @@ function getExpiredItem(){
 
 async function pushNotification(itemList) {
 
+
+    const today_date = moment(new Date(), 'DD-MM-YYYY')
     itemList.forEach(
-        element => PushNotification.localNotification(
-            {
-                channelId: "gardeMangerChannel",
-                title: element['product'],
-                message: element['expiration_date']
+        element => {
+
+            const date_item = moment(new Date(element['expiration_date']), 'DD-MM-YYYY')
+            const day_left = date_item.diff(today_date, 'days') + 1
+            if (day_left < LIMIT_EXPIRATION_IN_DAYS) {
+                PushNotification.localNotification(
+                    {
+                        channelId: "gardeMangerChannel",
+                        title: "Expiration du produit " + element['product'],
+                        message: day_left + " jours avant la date d'expiration"
+                    }
+                );
             }
-        )
+        }
     )
 }
-
-
 
 export default Notification;
