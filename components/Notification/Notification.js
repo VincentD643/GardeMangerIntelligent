@@ -17,6 +17,7 @@ PushNotification.configure({
 
 const Notification = () => {
 
+    const itemList = getExpiredItem();
 
     useEffect(() => {
         PushNotification.createChannel(
@@ -32,38 +33,40 @@ const Notification = () => {
             <Button
                 title="Press to Send Notification"
                 onPress={async () => {
-                    await pushNotification()
+                    await pushNotification(itemList)
                 }}
             />
         </View>
     )
 }
 
-async function pushNotification() {
-    //const expirationArray = getExpirationDate()
-    for (let i = 0; i < 2; i++) {
-        PushNotification.localNotification(
+function getExpiredItem(){
+    let itemList = []
+    const items = useSelector((state) => state.gardeMangerReducer.items)
+
+    for (let [key, value] of Object.entries(items)) {
+
+        itemList.push({
+            expiration_date:value.expiration_date,
+            product: value.product_name
+        })
+    }
+    return itemList
+}
+
+async function pushNotification(itemList) {
+
+    itemList.forEach(
+        element => PushNotification.localNotification(
             {
                 channelId: "gardeMangerChannel",
-                title: "New Update",
-                message: "Local test" + i
+                title: element['product'],
+                message: element['expiration_date']
             }
         )
-    }
+    )
 }
 
 
-function getExpirationDate() {
-
-    return {
-        sound: 'default',
-        title: 'sdgsdhx',
-        body: 'And dsgsdgsdgs!',
-        data: {someData: 'asfa hasfasfgasgere'},
-        channelId: 'default',
-        priority: 'high',
-        to: expoPushToken,
-    }
-}
 
 export default Notification;
