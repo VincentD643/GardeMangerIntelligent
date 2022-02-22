@@ -10,7 +10,7 @@ export default function BarcodeScannerCamera({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [isScanned, setIsScanned] = useState(false)
-
+  const dispatch = useDispatch()
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -19,16 +19,11 @@ export default function BarcodeScannerCamera({navigation}) {
   }, []);
   
 
-  const importData = (data) => {
-      const dispatch = useDispatch()
-      let jsonData
+  const importData = (properties, jsonData) => {
       try{
-        jsonData = JSON.parse(data)
-        const properties = jsonData.at(-1)
-        if (properties.isImport) {
           let type = properties.type
           if (type === "GardeManger") {
-            jsonData = jsonData.pop()
+            jsonData.pop()
             dispatch(setItems(jsonData))
             navigation.navigate('GardeManger')
           } else if (type === "GroceryList") {
@@ -38,9 +33,6 @@ export default function BarcodeScannerCamera({navigation}) {
             dispatch(setHistory(jsonData))
             navigation.navigate('History')
           }
-        } else {
-          console.log("Not a data import")
-        }
       } catch (e) {
         console.log("Not a data import")
       }
@@ -49,17 +41,25 @@ export default function BarcodeScannerCamera({navigation}) {
   const handleBarCodeScanned = async (data) => {
     let response = null
     if (!isScanned) {
-      importData(data)
-      response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
-      setIsScanned(true)
-      const product = {
-        product_name: response.data.product.product_name,
-        product_url: response.data.product.image_thumb_url,
-        nutriments: response.data.product.nutriments
+      let jsonData = JSON.parse(JSON.parse(data))
+      const properties = jsonData[jsonData.length - 1]
+      if (properties?.isImport) {
+        importData(properties, jsonData)
+        setIsScanned(true)
+      } else {
+        response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
+        setIsScanned(true)
+        const product = {
+          product_name: response.data.product.product_name,
+          product_url: response.data.product.image_thumb_url,
+          nutriments: response.data.product.nutriments
+        }
+        navigation.navigate('ProductForm', {
+          product,
+        })
       }
-      navigation.navigate('ProductForm', {
-        product,
-      })
+      
+      
     }
   };
 
