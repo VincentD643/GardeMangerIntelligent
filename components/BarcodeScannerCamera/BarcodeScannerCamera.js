@@ -38,28 +38,32 @@ export default function BarcodeScannerCamera({navigation}) {
       }
   }
 
+  const scanProduct = async (data) => {
+    const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
+    const product = {
+      product_name: response.data.product.product_name,
+      product_url: response.data.product.image_thumb_url,
+      nutriments: response.data.product.nutriments
+    }
+    navigation.navigate('ProductForm', {
+      product,
+    })
+  }
+
   const handleBarCodeScanned = async (data) => {
-    let response = null
     if (!isScanned) {
-      let jsonData = JSON.parse(JSON.parse(data))
-      const properties = jsonData[jsonData.length - 1]
-      if (properties?.isImport) {
-        importData(properties, jsonData)
-        setIsScanned(true)
-      } else {
-        response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
-        setIsScanned(true)
-        const product = {
-          product_name: response.data.product.product_name,
-          product_url: response.data.product.image_thumb_url,
-          nutriments: response.data.product.nutriments
+      try {
+        let jsonData = JSON.parse(JSON.parse(data))
+        const properties = jsonData[jsonData.length - 1]
+        if (properties?.isImport) {
+          importData(properties, jsonData)
+          setIsScanned(true)
         }
-        navigation.navigate('ProductForm', {
-          product,
-        })
+      } catch (e) {
+        console.log("not a data import")
+        scanProduct(data)
+        setIsScanned(true)
       }
-      
-      
     }
   };
 
