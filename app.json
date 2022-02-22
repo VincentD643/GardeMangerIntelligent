@@ -26,9 +26,6 @@
         "backgroundColor": "#FFFFFF"
       },
       "package": "com.LO795.GardeMangerIntelligent",
-      "googleServicesFile": "./android/app/google-services.json",
-      "permissions": ["NOTIFICATIONS","RECEIVE_BOOT_COMPLETED"],
-      "useNextNotificationsApi": true
     },
     "web": {
       "favicon": "./assets/favicon.png"
