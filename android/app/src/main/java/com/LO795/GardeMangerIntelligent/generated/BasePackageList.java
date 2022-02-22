@@ -11,13 +11,11 @@ public class BasePackageList {
         new expo.modules.barcodescanner.BarCodeScannerPackage(),
         new expo.modules.camera.CameraPackage(),
         new expo.modules.constants.ConstantsPackage(),
-        new expo.modules.device.DevicePackage(),
         new expo.modules.errorrecovery.ErrorRecoveryPackage(),
         new expo.modules.filesystem.FileSystemPackage(),
         new expo.modules.font.FontLoaderPackage(),
         new expo.modules.imageloader.ImageLoaderPackage(),
         new expo.modules.keepawake.KeepAwakePackage(),
-        new expo.modules.notifications.NotificationsPackage(),
         new expo.modules.splashscreen.SplashScreenPackage(),
         new expo.modules.updates.UpdatesPackage()
     );
