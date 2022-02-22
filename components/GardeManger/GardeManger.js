@@ -9,7 +9,8 @@ import {
   View,
   HStack,
   Spacer,
-  Pressable
+  Pressable,
+  Text
 } from "native-base"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useDispatch, useSelector } from 'react-redux';
@@ -17,6 +18,7 @@ import {
   StyleSheet,
   Platform,
   UIManager,
+  Dimensions
 } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import RowItem from "../DraggableSwipeList/RowItem";
@@ -27,7 +29,7 @@ if (Platform.OS === "android") {
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
 
-
+const windowH = Dimensions.get('window').height;
 
 const GardeManger = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -45,58 +47,61 @@ const GardeManger = ({ navigation }) => {
   
   return (
     <View style={styles.container}>
-    <DraggableFlatList
-      ListHeaderComponent={() => {
-        return (
-          <HStack style={styles.header}>
-            <Heading p="4" pb="3" size="lg">
-            Garde Manger
-            </Heading>
-            <Spacer />
-            <Pressable 
-              onPress={() => navigation.navigate('QRCodeScreen', {
-                type: "GardeManger",
-              })}
-              style={styles.shareButton}
-              _pressed={{
-                  opacity: 0.5
-                }} >
-            <Icon style={styles.containerIcon} size="sm" as={<MaterialCommunityIcons name={"share"}/>} color="black" />
-            </Pressable>
-          </HStack>
-          
-        )
-      }}
-      keyExtractor={(item) => item.key}
-      data={items}
-      renderItem={renderItem}
-      onDragEnd={({ data }) => dispatch(setItems(data))}
-      activationDistance={20}
-    />
-     <Box position="relative" h={100} w="100%">
-           <Menu
-              closeOnSelect={true}
-              w="160"
-              trigger={(triggerProps) => {
-                return (
-                  <Fab
-                    {...triggerProps}
-                    position="absolute"
-                    bottom={70}
-                    size="sm"
-                    icon={<Icon color="white" as={<MaterialCommunityIcons name="plus" />} size="sm" />}
-                  />
-                )
-              }}
-            >
-                <Menu.Item value="Roboto" onPress={() => navigation.navigate('BarcodeScannerCamera')}>Scan Product</Menu.Item>
-                <Divider/>
-                <Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Add Product Manually</Menu.Item>
-                <Divider/>
-                <Menu.Item value="Arial" onPress={() => navigation.navigate('ContainerForm')}>Add Divider</Menu.Item>
-            </Menu>
+      <DraggableFlatList
+        ListHeaderComponent={() => {
+          return (
+            <HStack style={styles.header}>
+              <Heading p="4" pb="3" size="lg">
+              Garde Manger
+              </Heading>
+              <Spacer />
+              <Pressable 
+                onPress={() => navigation.navigate('QRCodeScreen', {
+                  type: "GardeManger",
+                })}
+                style={styles.shareButton}
+                _pressed={{
+                    opacity: 0.5
+                  }} >
+              <Icon style={styles.containerIcon} size="sm" as={<MaterialCommunityIcons name={"share"}/>} color="black" />
+              </Pressable>
+            </HStack>
+          )
+        }}
+        keyExtractor={(item) => item.key}
+        data={items}
+        renderItem={renderItem}
+        onDragEnd={({ data }) => dispatch(setItems(data))}
+        activationDistance={20}
+      />
+      {items.length === 0 && 
+        <View style={styles.helperText}>      
+          <Text>Le Garde Manger est vide, importez ou ajouter des produits.</Text>
+        </View>}
+      <Box position="relative" h={100} w="100%">
+        <Menu
+            closeOnSelect={true}
+            w="160"
+            trigger={(triggerProps) => {
+              return (
+                <Fab
+                  {...triggerProps}
+                  position="absolute"
+                  bottom={70}
+                  size="sm"
+                  icon={<Icon color="white" as={<MaterialCommunityIcons name="plus" />} size="sm" />}
+                />
+              )
+            }}
+          >
+              <Menu.Item value="Roboto" onPress={() => navigation.navigate('BarcodeScannerCamera')}>Scan Product</Menu.Item>
+              <Divider/>
+              <Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Add Product Manually</Menu.Item>
+              <Divider/>
+              <Menu.Item value="Arial" onPress={() => navigation.navigate('ContainerForm')}>Add Divider</Menu.Item>
+          </Menu>
         </Box>
-  </View>
+      </View>
   )
 };
 
@@ -109,6 +114,11 @@ const styles = StyleSheet.create({
   },
   shareButton: {
     top: 20,
+  },
+  helperText: {
+    flex: 1,
+    paddingTop: windowH / 3,
+    paddingLeft: 30
   }
   
 });
