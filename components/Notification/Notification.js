@@ -20,26 +20,15 @@ PushNotification.configure({
 const Notification = () => {
 
     const itemList = getExpiredItem();
-
-    useEffect(() => {
-        PushNotification.createChannel(
-            {
-                channelId: "gardeMangerChannel",
-                channelName: "Garde Manger Channel"
-            }
-        )
-    }, []);
-
-    return (
-        <View>
-            <Button
-                title="Obtenir les produits qui expire bientôt"
-                onPress={async () => {
-                    await pushNotification(itemList)
-                }}
-            />
-        </View>
+    PushNotification.createChannel(
+        {
+            channelId: "gardeMangerChannel",
+            channelName: "Garde Manger Channel"
+        }
     )
+    pushNotification(itemList)
+
+    return null;
 }
 
 function getExpiredItem() {
@@ -55,8 +44,7 @@ function getExpiredItem() {
     return itemList
 }
 
-async function pushNotification(itemList) {
-
+function pushNotification(itemList) {
 
     const today_date = moment(new Date(), 'DD-MM-YYYY')
     itemList.forEach(
@@ -76,5 +64,4 @@ async function pushNotification(itemList) {
         }
     )
 }
-
 export default Notification;

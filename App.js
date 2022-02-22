@@ -53,12 +53,13 @@ const GardeMangerScreen = () => {
 
 //https://reactnavigation.org/docs/bottom-tab-navigator/ pour les options du tab nav
 //https://icons.expo.fyi/ pour les icones, essayez d'utiliser MaterialCommunityIcons
-export default function App() {
+export default function App(){
+
   return (
     <Provider store={store}>
       <PersistGate loading={<View><Text>Loading...</Text></View>} persistor={persistor}>
+        <Notification/>
         <NativeBaseProvider contentContainerStyle={{ flexGrow: 1 }} theme={theme}>
-            <Notification/>
             <NavigationContainer>
             <Tab.Navigator
               screenOptions={{
@@ -89,5 +90,6 @@ export default function App() {
         </NativeBaseProvider>
       </PersistGate>
     </Provider>
+
   );
 }
