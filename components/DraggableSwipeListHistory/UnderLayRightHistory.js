@@ -1,22 +1,12 @@
 import React from "react";
 import {
     Icon,
-    Heading,
-    Box,
-    Text,
     Pressable,
-    HStack,
-    Avatar,
-    VStack,
-    Spacer,
-    Fab,
-    Divider,
-    Menu,
-    Center
   } from "native-base"
 import {
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    ToastAndroid,
   } from "react-native";
 import { useDispatch } from 'react-redux';
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
@@ -38,6 +28,9 @@ const UnderLayRightHistory = ({ item }) => {
     const deleteProduct = () => {
         close();
         dispatch(removeHistory(item));
+        if (Platform.OS === "android") {
+          ToastAndroid.show('Produit supprimé de l\'historique.', ToastAndroid.SHORT);
+        }
     };
 
     return (

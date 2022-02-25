@@ -2,17 +2,19 @@ import React from "react";
 import {
   Icon,
   Pressable,
+  HStack
 } from "native-base"
 import {
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  ToastAndroid,
 } from "react-native";
 import { useDispatch } from 'react-redux';
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import {useSwipeableItemParams } from "react-native-swipeable-item";
-import { MaterialCommunityIcons } from "@expo/vector-icons"
-import {closeOpenContainer, addItem} from "../../reducers/gardeMangerReducer";
-import {addHistory} from "../../reducers/historyReducer";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
+import {addItem} from "../../reducers/gardeMangerReducer";
+import {reduceQuantity, addItem as addItemGroceryList} from "../../reducers/groceryListReducer";
 
 const UnderLayLeftGroceryList = ({ item }) => {
     const dispatch = useDispatch();
@@ -24,9 +26,20 @@ const UnderLayLeftGroceryList = ({ item }) => {
       [percentOpen]
     );
 
+    const incrementQuantity = () => {
+      dispatch(addItemGroceryList(item))
+      if (Platform.OS === "android") {
+        const newQty = item.quantity + 1
+        ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
+      }
+    }
     const addProduct = () => {
         close();
         dispatch(addItem(item))
+        dispatch(reduceQuantity(item))
+        if (Platform.OS === "android") {
+          ToastAndroid.show('Produit ajouté au Garde Manger.', ToastAndroid.SHORT);
+        }
     }
 
     return (
@@ -34,19 +47,33 @@ const UnderLayLeftGroceryList = ({ item }) => {
           style={[styles.row, styles.underlayLeft, animStyle]} // Fade in on open
         >
           <TouchableOpacity>
-            <Pressable
-                  pl="4"
-                  pr="5"
-                  py="2"
-                  borderRightRadius="10"
-                  onPress={() => addProduct()}
-                  _pressed={{
-                    opacity: 0.5
-                  }} 
-                  bg={colors.green}
-                  justifyContent="center">
-                  <Icon as={<MaterialCommunityIcons name="playlist-plus"/>} color="white" />
-            </Pressable>
+          <HStack>
+              <Pressable
+                    pl="4"
+                    pr="5"
+                    py="2"
+                    onPress={() => incrementQuantity()}  
+                    _pressed={{
+                        opacity: 0.5
+                    }} 
+                    bg={colors.green}
+                    justifyContent="center">
+                    <Icon as={<MaterialIcons name="exposure-plus-1"/>} color="white" />
+              </Pressable>
+              <Pressable
+                    pl="4"
+                    pr="5"
+                    py="2"
+                    borderRightRadius="10"
+                    onPress={() => addProduct()}
+                    _pressed={{
+                      opacity: 0.5
+                    }} 
+                    bg={colors.green}
+                    justifyContent="center">
+                    <Icon as={<MaterialCommunityIcons name="playlist-plus"/>} color="white" />
+              </Pressable>
+            </HStack>
           </TouchableOpacity>
         </Animated.View>
       )
