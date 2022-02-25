@@ -29,36 +29,10 @@ const slice = createSlice({
             newData.splice(prevIndex, 1)
             state.items = newData
         },
-
-        closeOpenContainer: (state, action) => {
-            let firstIndex, lastIndex
-            firstIndex = state.items.findIndex((item) => item.key === action.payload.key)
-            let tempArray = state.items.slice(firstIndex + 1);
-            lastIndex = tempArray.findIndex((item) => item.isContainer === true)
-            if (lastIndex === -1) {
-                lastIndex = state.items.length - 1
-            }
-            let newData = [...state.items]
-            let isClosed = action.payload.isClosed
-            for (let i = firstIndex; i <= lastIndex; i++) {
-                if (!newData[i].isContainer) {
-                    newData[i] = {
-                        ...newData[i],
-                        isHidden: !isClosed
-                    }
-                } else {
-                    newData[i] = {
-                        ...newData[i],
-                        isClosed: !isClosed
-                    }
-                }
-            }
-            state.items = newData
-        }
     },
 });
 
 // Actions
-export const { setItems, addItem, editItem, removeItem, closeOpenContainer } = slice.actions
+export const { setItems, addItem, editItem, removeItem } = slice.actions
 
 export default slice.reducer

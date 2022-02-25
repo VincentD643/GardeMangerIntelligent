@@ -16,8 +16,8 @@ import {
 } from "react-native";
 import SwipeableItem from "react-native-swipeable-item";
 import { ScaleDecorator} from "react-native-draggable-flatlist";
-import UnderlayLeft from "./UnderLayLeft"
-import UnderlayRight from "./UnderLayRight"
+import UnderLayLeftGroceryList from "./UnderLayLeftGroceryList"
+import UnderLayRightGroceryList from "./UnderLayRightGroceryList"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useDispatch } from 'react-redux';
 import { closeOpenContainer } from "../../reducers/groceryListReducer";
@@ -25,7 +25,7 @@ import { closeOpenContainer } from "../../reducers/groceryListReducer";
 const windowW = Dimensions.get('window').width;
 const windowH = Dimensions.get('window').height;
 
-const RowItem = ({ item, drag, itemRefs, navigation }) => {
+const RowItemGroceryList = ({ item, drag, itemRefs, navigation }) => {
     const dispatch = useDispatch()
     const formatDate = (date) => {
       const newDate = new Date(date)
@@ -55,8 +55,8 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
             });
           }
         }}
-        renderUnderlayLeft={() => !item.isContainer && <UnderlayLeft item={item} />}
-        renderUnderlayRight={() => <UnderlayRight item={item} />}
+        renderUnderlayLeft={() => !item.isContainer && <UnderLayLeftGroceryList item={item} />}
+        renderUnderlayRight={() => <UnderLayRightGroceryList item={item} />}
         snapPointsLeft={item.isContainer ? [0] : [50]}
         snapPointsRight={[50]}
       >
@@ -79,10 +79,7 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
               </Pressable>
               
           :
-          <Pressable onPressIn={drag} onPress={() => navigation.navigate('ProductForm', {
-            product: item,
-            isEdit: true
-          })}>
+          <Pressable onPressIn={drag}>
              <HStack style={styles.item} alignItems="center" space={3} >
                 <Avatar size="48px" source={{uri: item.product_url}}>NA</Avatar>
                 <VStack>
@@ -156,4 +153,4 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
   });
   
 
-  export default RowItem
+  export default RowItemGroceryList

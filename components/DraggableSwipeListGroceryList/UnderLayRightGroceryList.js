@@ -26,7 +26,7 @@ import { removeItem } from "../../reducers/groceryListReducer";
 import { closeOpenContainer } from "../../reducers/groceryListReducer";
 import { addHistory } from "../../reducers/historyReducer";
 
-const  UnderlayRight = ({ item }) => {
+const  UnderLayRightGroceryList = ({ item }) => {
     const dispatch = useDispatch()
     const { close } = useSwipeableItemParams()
     const { it, percentOpen } = useSwipeableItemParams();
@@ -39,12 +39,6 @@ const  UnderlayRight = ({ item }) => {
 
     const deleteProduct = () => {
         close();
-        if (item.isContainer && item.isClosed) {
-            dispatch(closeOpenContainer(item))
-        }
-        if (!item.isContainer) {
-          dispatch(addHistory(item))
-        }
         dispatch(removeItem(item))
     };
 
@@ -87,4 +81,4 @@ const  UnderlayRight = ({ item }) => {
     },
   });
   
-  export default UnderlayRight
+  export default UnderLayRightGroceryList

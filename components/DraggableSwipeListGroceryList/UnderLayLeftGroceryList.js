@@ -14,7 +14,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import {closeOpenContainer, addItem} from "../../reducers/gardeMangerReducer";
 import {addHistory} from "../../reducers/historyReducer";
 
-const UnderlayLeft = ({ item }) => {
+const UnderLayLeftGroceryList = ({ item }) => {
     const dispatch = useDispatch();
     const { it, percentOpen, close } = useSwipeableItemParams();
     const animStyle = useAnimatedStyle(
@@ -26,12 +26,6 @@ const UnderlayLeft = ({ item }) => {
 
     const addProduct = () => {
         close();
-        if (item.isContainer && item.isClosed) {
-            dispatch(closeOpenContainer(item))
-        }
-        if (!item.isContainer) {
-            dispatch(addHistory(item))
-        }
         dispatch(addItem(item))
     }
 
@@ -76,4 +70,4 @@ const styles = StyleSheet.create({
   },
 });
    
-export default UnderlayLeft
+export default UnderLayLeftGroceryList
