@@ -61,6 +61,7 @@ export default function BarcodeScannerCamera({navigation}) {
         isHidden: false,
       }
       dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
+      navigation.navigate('GardeManger')
     }
    
   }
