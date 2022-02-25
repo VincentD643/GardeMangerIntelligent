@@ -57,8 +57,8 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
         }}
         renderUnderlayLeft={() => !item.isContainer && <UnderlayLeft item={item} />}
         renderUnderlayRight={() => <UnderlayRight item={item} />}
-        snapPointsLeft={item.isContainer ? [0] : [50]}
-        snapPointsRight={[50]}
+        snapPointsLeft={item.isContainer ? [0] : [120]}
+        snapPointsRight={[120]}
       >
         <View style={styles.row}>
           

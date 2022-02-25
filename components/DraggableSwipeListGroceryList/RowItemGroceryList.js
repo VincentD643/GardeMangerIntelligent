@@ -7,7 +7,6 @@ import {
   Pressable,
   Avatar,
   Spacer,
-  Icon
 } from "native-base"
 import {
   StyleSheet,
@@ -18,15 +17,10 @@ import SwipeableItem from "react-native-swipeable-item";
 import { ScaleDecorator} from "react-native-draggable-flatlist";
 import UnderLayLeftGroceryList from "./UnderLayLeftGroceryList"
 import UnderLayRightGroceryList from "./UnderLayRightGroceryList"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { useDispatch } from 'react-redux';
-import { closeOpenContainer } from "../../reducers/groceryListReducer";
-
+const chicken = require('../../assets/chicken.png');
 const windowW = Dimensions.get('window').width;
-const windowH = Dimensions.get('window').height;
 
 const RowItemGroceryList = ({ item, drag, itemRefs, navigation }) => {
-    const dispatch = useDispatch()
     const formatDate = (date) => {
       const newDate = new Date(date)
       return `${newDate.getDate()}/${newDate.getMonth() +
@@ -57,31 +51,14 @@ const RowItemGroceryList = ({ item, drag, itemRefs, navigation }) => {
         }}
         renderUnderlayLeft={() => !item.isContainer && <UnderLayLeftGroceryList item={item} />}
         renderUnderlayRight={() => <UnderLayRightGroceryList item={item} />}
-        snapPointsLeft={item.isContainer ? [0] : [50]}
-        snapPointsRight={[50]}
+        snapPointsLeft={[120]}
+        snapPointsRight={[120]}
       >
         <View style={styles.row}>
-          
           <TouchableOpacity onPressIn={drag}>
-          {item.isContainer ? 
-             <Pressable
-                style={styles.container}
-                onPress={() => dispatch(closeOpenContainer(item))}  
-                _pressed={{
-                  opacity: 0.5
-                }} 
-                justifyContent="center">
-                  <HStack alignItems="center">
-                      <Text style={styles.containerTitle}>{item.container_name}</Text>
-                      <Spacer />
-                      <Icon style={styles.containerIcon} as={<MaterialCommunityIcons name={item.isClosed ? "chevron-up": "chevron-down"}/>} color="black" />
-                    </HStack>
-              </Pressable>
-              
-          :
           <Pressable onPressIn={drag}>
              <HStack style={styles.item} alignItems="center" space={3} >
-                <Avatar size="48px" source={{uri: item.product_url}}>NA</Avatar>
+              <Avatar size="48px" source={item?.product_url ? { uri: item.product_url} : chicken}>NA</Avatar>
                 <VStack>
                   <Text color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
                     {item.product_name}
@@ -96,7 +73,7 @@ const RowItemGroceryList = ({ item, drag, itemRefs, navigation }) => {
                   Qty: {item.quantity}
                 </Text>
               </HStack>
-          </Pressable>}
+          </Pressable>
          </TouchableOpacity>
         </View>
       </SwipeableItem>

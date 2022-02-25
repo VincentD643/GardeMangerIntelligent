@@ -13,12 +13,10 @@ const slice = createSlice({
     addHistory: (state, action) => {
         const newData = [...state.items]
         const prevIndex = state.items.findIndex((item) => item.product_name === action.payload.product_name)
-        //make sure we dont add the same item twice to history, just replace with new one
-        if (prevIndex > 0) {
-          newData.splice(prevIndex, 1)
+        //make sure we dont add the same item twice to history
+        if (prevIndex < 0) {
+          state.items = [...newData, action.payload]
         }
-        
-        state.items = [...newData, action.payload]
     },
 
     editHistory: (state, action) => {
