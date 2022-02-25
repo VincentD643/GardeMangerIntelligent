@@ -15,7 +15,11 @@ const slice = createSlice({
         const prevIndex = state.items.findIndex((item) => item.product_name === action.payload.product_name)
         //make sure we dont add the same item twice to history
         if (prevIndex < 0) {
-          state.items = [...newData, action.payload]
+          const newProduct = {
+            ...action.payload,
+            quantity: 1
+          }
+          state.items = [...newData, newProduct]
         }
     },
 

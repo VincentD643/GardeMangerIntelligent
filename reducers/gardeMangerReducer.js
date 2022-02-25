@@ -12,7 +12,7 @@ const slice = createSlice({
 
     addItem: (state, action) => {
       let newData = [...state.items]
-      const prevIndex = state.items.findIndex((item) => item.key === action.payload.key)
+      const prevIndex = state.items.findIndex((item) => item.product_name === action.payload.product_name)
       //make sure we dont add the same item twice to gardeManger, just increase quantity
       if (prevIndex >= 0) {
         newData[prevIndex].quantity =  newData[prevIndex].quantity + 1

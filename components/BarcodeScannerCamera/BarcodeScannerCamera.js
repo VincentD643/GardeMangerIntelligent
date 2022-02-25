@@ -3,14 +3,17 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import { setItems } from '../../reducers/gardeMangerReducer';
 import { setHistory } from '../../reducers/historyReducer';
+import { addItem } from "../../reducers/gardeMangerReducer";
 
 export default function BarcodeScannerCamera({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [isScanned, setIsScanned] = useState(false)
   const dispatch = useDispatch()
+  const scanType = route?.params?.scanType;
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -45,9 +48,21 @@ export default function BarcodeScannerCamera({navigation}) {
       product_url: response.data.product.image_thumb_url,
       nutriments: response.data.product.nutriments
     }
-    navigation.navigate('ProductForm', {
-      product,
-    })
+    if (scanType === "completeScan") {
+      navigation.navigate('ProductForm', {
+        product,
+      })
+    } else {
+      let formData = {
+        ...product,
+        key: uuidv4(),
+        quantity: 1,
+        isContainer: false,
+        isHidden: false,
+      }
+      dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
+    }
+   
   }
 
   const handleBarCodeScanned = async (data) => {
