@@ -94,11 +94,13 @@ const GardeManger = ({ navigation }) => {
               )
             }}
           >
-              <Menu.Item value="Roboto" onPress={() => navigation.navigate('BarcodeScannerCamera')}>Scan Product</Menu.Item>
+              <Menu.Item value="Roboto" onPress={() => navigation.navigate('BarcodeScannerCamera', { scanType: "completeScan"})}>Scan complet</Menu.Item>
               <Divider/>
-              <Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Add Product Manually</Menu.Item>
+              <Menu.Item value="Roboto" onPress={() => navigation.navigate('BarcodeScannerCamera', { scanType: "fastScan"})}>Scan rapide</Menu.Item>
               <Divider/>
-              <Menu.Item value="Arial" onPress={() => navigation.navigate('ContainerForm')}>Add Divider</Menu.Item>
+              <Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Ajout produit manuel</Menu.Item>
+              <Divider/>
+              <Menu.Item value="Arial" onPress={() => navigation.navigate('ContainerForm')}>Ajout de séparateur</Menu.Item>
           </Menu>
         </Box>
       </View>

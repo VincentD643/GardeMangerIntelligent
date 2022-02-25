@@ -63,20 +63,20 @@ export default function App() {
                 headerShown: false
               }}>
               <Tab.Screen  name="GardeMangerScreen" component={GardeMangerScreen} options={{
-                title: 'Garde manger',
+                title: 'Garde Manger',
                 tabBarIcon: ({ color, size }) => (
                   <Icon as={MaterialCommunityIcons} name="food-apple" color={color} size={size} />
                 ),
                 }}/>
               <Tab.Screen name="GroceryList" component={GroceryList} options={{
-                title: 'Grocery list',
+                title: 'Liste d\'épicerie',
                 tabBarIcon: ({ color, size }) => (
                   <Icon as={MaterialCommunityIcons} name="cart-outline" color={color} size={size} />
                 ),
                 }}
             />
               <Tab.Screen name="History" component={History} options={{
-                title: 'Product history',
+                title: 'Historique',
                 tabBarIcon: ({ color, size }) => (
                   <Icon as={MaterialCommunityIcons} name="history" color={color} size={size} />
                 ),
