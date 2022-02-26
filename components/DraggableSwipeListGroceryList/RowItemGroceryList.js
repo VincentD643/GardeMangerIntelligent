@@ -11,19 +11,25 @@ import {
 import {
   StyleSheet,
   TouchableOpacity,
+  Dimensions
 } from "react-native";
 import SwipeableItem from "react-native-swipeable-item";
 import { ScaleDecorator} from "react-native-draggable-flatlist";
-import UnderLayLeftHistory from "./UnderLayLeftHistory"
-import UnderLayRightHistory from "./UnderLayRightHistory"
+import UnderLayLeftGroceryList from "./UnderLayLeftGroceryList"
+import UnderLayRightGroceryList from "./UnderLayRightGroceryList"
 const chicken = require('../../assets/chicken.png');
+const windowW = Dimensions.get('window').width;
 
-const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
+const RowItemGroceryList = ({ item, drag, itemRefs, navigation }) => {
     const formatDate = (date) => {
       const newDate = new Date(date)
       return `${newDate.getDate()}/${newDate.getMonth() +
         1}/${newDate.getFullYear()}`;
     };
+
+    if (!item.isContainer && item.isHidden) {
+      return null
+    }
 
     return (
       <ScaleDecorator>
@@ -43,10 +49,10 @@ const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
             });
           }
         }}
-        renderUnderlayLeft={() => <UnderLayLeftHistory item={item} navigation={navigation} />}
-        renderUnderlayRight={() => <UnderLayRightHistory item={item} />}
+        renderUnderlayLeft={() => !item.isContainer && <UnderLayLeftGroceryList item={item} />}
+        renderUnderlayRight={() => <UnderLayRightGroceryList item={item} />}
         snapPointsLeft={[120]}
-        snapPointsRight={[50]}
+        snapPointsRight={[120]}
       >
         <View style={styles.row}>
           <TouchableOpacity onPressIn={drag}>
@@ -109,7 +115,19 @@ const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
       backgroundColor: "tomato",
       justifyContent: "flex-end",
     },
+    container: {
+      width: windowW,
+      height: 50,
+
+      padding: 15
+    },
+    containerIcon: {
+      alignSelf: 'flex-end',
+    },
+    containerTitle: {
+      color: 'black',
+    }
   });
   
 
-  export default RowItemHistory
+  export default RowItemGroceryList

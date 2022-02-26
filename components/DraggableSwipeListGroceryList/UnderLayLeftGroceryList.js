@@ -1,24 +1,24 @@
 import React from "react";
 import {
-    HStack,
   Icon,
   Pressable,
+  HStack
 } from "native-base"
 import {
   TouchableOpacity,
   StyleSheet,
-  ToastAndroid
+  ToastAndroid,
 } from "react-native";
 import { useDispatch } from 'react-redux';
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import {useSwipeableItemParams } from "react-native-swipeable-item";
-import { MaterialCommunityIcons } from "@expo/vector-icons"
-import { addItem } from "../../reducers/groceryListReducer";
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
+import {addItem} from "../../reducers/gardeMangerReducer";
+import {reduceQuantity, addItem as addItemGroceryList} from "../../reducers/groceryListReducer";
 
-const UnderLayLeftHistory = ({ item, navigation }) => {
+const UnderLayLeftGroceryList = ({ item }) => {
     const dispatch = useDispatch();
-    const { it, percentOpen } = useSwipeableItemParams();
-
+    const { it, percentOpen, close } = useSwipeableItemParams();
     const animStyle = useAnimatedStyle(
       () => ({
         opacity: percentOpen.value,
@@ -26,44 +26,54 @@ const UnderLayLeftHistory = ({ item, navigation }) => {
       [percentOpen]
     );
 
-    const addGroceryList = () => {
-      dispatch(addItem(item))
+    const incrementQuantity = () => {
+      dispatch(addItemGroceryList(item))
       if (Platform.OS === "android") {
-        ToastAndroid.show('Produit ajouté à la liste d\'épicerie.', ToastAndroid.SHORT);
+        const newQty = item.quantity + 1
+        ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
       }
     }
+    const addProduct = () => {
+        close();
+        dispatch(addItem(item))
+        dispatch(reduceQuantity(item))
+        if (Platform.OS === "android") {
+          ToastAndroid.show('Produit ajouté au Garde Manger.', ToastAndroid.SHORT);
+        }
+    }
+
     return (
         <Animated.View
           style={[styles.row, styles.underlayLeft, animStyle]} // Fade in on open
         >
           <TouchableOpacity>
-              <HStack>
-                <Pressable
+          <HStack>
+              <Pressable
                     pl="4"
                     pr="5"
                     py="2"
-                    onPress={() => addGroceryList()}  
+                    onPress={() => incrementQuantity()}  
                     _pressed={{
                         opacity: 0.5
                     }} 
                     bg={colors.green}
                     justifyContent="center">
-                    <Icon as={<MaterialCommunityIcons name="cart-plus"/>} color="white" />
-                </Pressable>
-                <Pressable
+                    <Icon as={<MaterialIcons name="exposure-plus-1"/>} color="white" />
+              </Pressable>
+              <Pressable
                     pl="4"
                     pr="5"
                     py="2"
                     borderRightRadius="10"
-                    onPress={() => navigation.navigate('ProductForm', { product: item })}  
+                    onPress={() => addProduct()}
                     _pressed={{
-                        opacity: 0.5
+                      opacity: 0.5
                     }} 
                     bg={colors.green}
                     justifyContent="center">
                     <Icon as={<MaterialCommunityIcons name="playlist-plus"/>} color="white" />
-                </Pressable>
-              </HStack>
+              </Pressable>
+            </HStack>
           </TouchableOpacity>
         </Animated.View>
       )
@@ -87,4 +97,4 @@ const styles = StyleSheet.create({
   },
 });
    
-export default UnderLayLeftHistory
+export default UnderLayLeftGroceryList

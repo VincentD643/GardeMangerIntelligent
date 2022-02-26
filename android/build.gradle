@@ -4,11 +4,10 @@ buildscript {
     ext {
         buildToolsVersion = "29.0.3"
         minSdkVersion = 21
-        compileSdkVersion = 31
-        targetSdkVersion = 31
+        compileSdkVersion = 30
+        targetSdkVersion = 30
         googlePlayServicesVersion = "+"
         firebaseMessagingVersion = "21.1.0"
-
     }
     repositories {
         google()
@@ -29,7 +28,6 @@ allprojects {
         maven {
             // All of React Native (JS, Obj-C sources, Android binaries) is installed from npm
             url("$rootDir/../node_modules/react-native/android")
-         
         }
         maven {
             // Android JSC is installed from npm
@@ -39,9 +37,7 @@ allprojects {
         google()
         jcenter()
         maven { url 'https://www.jitpack.io' }
-        maven {
-            // expo-camera bundles a custom com.google.android:cameraview
-            url "$rootDir/../node_modules/expo-camera/android/maven"
-        }
     }
 }
+
+allprojects { repositories { maven { url "$rootDir/../node_modules/expo-camera/android/maven" } } }

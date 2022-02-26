@@ -1,8 +1,8 @@
 import React from "react";
 import {
+    HStack,
     Icon,
     Pressable,
-    HStack,
   } from "native-base"
 import {
     TouchableOpacity,
@@ -13,11 +13,9 @@ import { useDispatch } from 'react-redux';
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import {useSwipeableItemParams } from "react-native-swipeable-item";
-import { removeItem, reduceQuantity } from "../../reducers/gardeMangerReducer";
-import { closeOpenContainer } from "../../reducers/gardeMangerReducer";
-import { addHistory } from "../../reducers/historyReducer";
+import { removeItem, reduceQuantity } from "../../reducers/groceryListReducer";
 
-const  UnderlayRight = ({ item }) => {
+const  UnderLayRightGroceryList = ({ item }) => {
     const dispatch = useDispatch()
     const { close } = useSwipeableItemParams()
     const { it, percentOpen } = useSwipeableItemParams();
@@ -35,18 +33,11 @@ const  UnderlayRight = ({ item }) => {
         ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
       }
     }
-    
     const deleteProduct = () => {
         close();
-        if (item.isContainer && item.isClosed) {
-            dispatch(closeOpenContainer(item))
-        }
-        if (!item.isContainer) {
-          dispatch(addHistory(item))
-        }
         dispatch(removeItem(item))
         if (Platform.OS === "android") {
-          ToastAndroid.show('Produit/Séparateur supprimé.', ToastAndroid.SHORT);
+          ToastAndroid.show('Produit supprimé de la liste d\'épicerie.', ToastAndroid.SHORT);
         }
     };
 
@@ -68,16 +59,16 @@ const  UnderlayRight = ({ item }) => {
                 <Icon as={<MaterialCommunityIcons name="delete"/>} color='white'/>
             </Pressable>
             <Pressable
-                pl="4"
-                pr="5"
-                py="2"
-                onPress={() => decrementQuantity()}  
-                _pressed={{
-                    opacity: 0.5
-                }} 
-                bg={colors.error}
-                justifyContent="center">
-                <Icon as={<MaterialIcons name="exposure-minus-1"/>} color="white" />
+                    pl="4"
+                    pr="5"
+                    py="2"
+                    onPress={() => decrementQuantity()}  
+                    _pressed={{
+                        opacity: 0.5
+                    }} 
+                    bg={colors.error}
+                    justifyContent="center">
+                    <Icon as={<MaterialIcons name="exposure-minus-1"/>} color="white" />
               </Pressable>
             </HStack>
         </TouchableOpacity>
@@ -103,4 +94,4 @@ const  UnderlayRight = ({ item }) => {
     },
   });
   
-  export default UnderlayRight
+  export default UnderLayRightGroceryList

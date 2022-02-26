@@ -21,7 +21,7 @@ import UnderlayRight from "./UnderLayRight"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useDispatch } from 'react-redux';
 import { closeOpenContainer } from "../../reducers/gardeMangerReducer";
-
+const chicken = require('../../assets/chicken.png');
 const windowW = Dimensions.get('window').width;
 const windowH = Dimensions.get('window').height;
 
@@ -57,8 +57,8 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
         }}
         renderUnderlayLeft={() => !item.isContainer && <UnderlayLeft item={item} />}
         renderUnderlayRight={() => <UnderlayRight item={item} />}
-        snapPointsLeft={item.isContainer ? [0] : [50]}
-        snapPointsRight={[50]}
+        snapPointsLeft={item.isContainer ? [0] : [120]}
+        snapPointsRight={[120]}
       >
         <View style={styles.row}>
           
@@ -84,7 +84,7 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
             isEdit: true
           })}>
              <HStack style={styles.item} alignItems="center" space={3} >
-                <Avatar size="48px" source={{uri: item.product_url}}>NA</Avatar>
+                <Avatar size="48px" source={item?.product_url ? { uri: item.product_url} : chicken}>NA</Avatar>
                 <VStack>
                   <Text color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
                     {item.product_name}

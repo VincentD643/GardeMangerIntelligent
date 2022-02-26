@@ -3,14 +3,17 @@ import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
 import { Camera } from 'expo-camera';
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
+import { v4 as uuidv4 } from 'uuid';
 import { setItems } from '../../reducers/gardeMangerReducer';
 import { setHistory } from '../../reducers/historyReducer';
+import { addItem } from "../../reducers/gardeMangerReducer";
 
 export default function BarcodeScannerCamera({navigation}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [isScanned, setIsScanned] = useState(false)
-
+  const dispatch = useDispatch()
+  const scanType = route?.params?.scanType;
   useEffect(() => {
     (async () => {
       const { status } = await Camera.requestCameraPermissionsAsync();
@@ -19,16 +22,11 @@ export default function BarcodeScannerCamera({navigation}) {
   }, []);
   
 
-  const importData = (data) => {
-      const dispatch = useDispatch()
-      let jsonData
+  const importData = (properties, jsonData) => {
       try{
-        jsonData = JSON.parse(data)
-        const properties = jsonData.at(-1)
-        if (properties.isImport) {
           let type = properties.type
           if (type === "GardeManger") {
-            jsonData = jsonData.pop()
+            jsonData.pop()
             dispatch(setItems(jsonData))
             navigation.navigate('GardeManger')
           } else if (type === "GroceryList") {
@@ -38,28 +36,50 @@ export default function BarcodeScannerCamera({navigation}) {
             dispatch(setHistory(jsonData))
             navigation.navigate('History')
           }
-        } else {
-          console.log("Not a data import")
-        }
       } catch (e) {
         console.log("Not a data import")
       }
   }
 
-  const handleBarCodeScanned = async (data) => {
-    let response = null
-    if (!isScanned) {
-      importData(data)
-      response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
-      setIsScanned(true)
-      const product = {
-        product_name: response.data.product.product_name,
-        product_url: response.data.product.image_thumb_url,
-        nutriments: response.data.product.nutriments
-      }
+  const scanProduct = async (data) => {
+    const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
+    const product = {
+      product_name: response.data.product.product_name,
+      product_url: response.data.product.image_thumb_url,
+      nutriments: response.data.product.nutriments
+    }
+    if (scanType === "completeScan") {
       navigation.navigate('ProductForm', {
         product,
       })
+    } else {
+      let formData = {
+        ...product,
+        key: uuidv4(),
+        quantity: 1,
+        isContainer: false,
+        isHidden: false,
+      }
+      dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
+      navigation.navigate('GardeManger')
+    }
+   
+  }
+
+  const handleBarCodeScanned = async (data) => {
+    if (!isScanned) {
+      try {
+        let jsonData = JSON.parse(JSON.parse(data))
+        const properties = jsonData[jsonData.length - 1]
+        if (properties?.isImport) {
+          importData(properties, jsonData)
+          setIsScanned(true)
+        }
+      } catch (e) {
+        console.log("not a data import")
+        scanProduct(data)
+        setIsScanned(true)
+      }
     }
   };
 
