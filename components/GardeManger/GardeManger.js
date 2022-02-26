@@ -1,4 +1,4 @@
-import React, { useRef, useCallback } from "react";
+import React, { useRef, useCallback, useState, useEffect } from "react";
 import {
   Icon,
   Heading,
@@ -10,9 +10,10 @@ import {
   HStack,
   Spacer,
   Pressable,
-  Text
+  Text,
+  Input
 } from "native-base"
-import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
@@ -21,8 +22,9 @@ import {
   Dimensions
 } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
+
 import RowItem from "../DraggableSwipeList/RowItem";
-import { setItems } from "../../reducers/gardeMangerReducer";
+import { setItems, searchGardeManger, resetSearch } from "../../reducers/gardeMangerReducer";
 
 if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental &&
@@ -30,12 +32,23 @@ if (Platform.OS === "android") {
 }
 
 const windowH = Dimensions.get('window').height;
+const windowW = Dimensions.get('window').width;
 
 const GardeManger = ({ navigation }) => {
+  const [isSearchActive, setIsSearchActive] = useState(false);
+  const [search, setSearch] = useState("");
   const dispatch = useDispatch();
   const itemRefs = useRef(new Map());
   const items = useSelector((state) => state.gardeMangerReducer.items)
   
+  useEffect(() => {
+    if (isSearchActive) {
+      dispatch(searchGardeManger(search))
+    } else {
+      dispatch(resetSearch())
+    }
+  }, [search, isSearchActive]);
+
   const renderItem = useCallback((params) => {
     const RowItemProps = {
       ...params,
@@ -44,17 +57,32 @@ const GardeManger = ({ navigation }) => {
     return <RowItem {...RowItemProps} itemRefs={itemRefs} />;
   }, []);
 
-  
   return (
     <View style={styles.container}>
+       {isSearchActive &&  
+        <Input
+          variant="underlined"
+          style={styles.searchField}
+          p="4" pb="3" size="lg"
+          value={search}
+          placeholder="Search"
+          onChangeText={value => setSearch(value)}
+        />
+       }
       <DraggableFlatList
         ListHeaderComponent={() => {
           return (
             <HStack style={styles.header}>
-              <Heading p="4" pb="3" size="lg">
-              Garde Manger
-              </Heading>
+              <Heading p="4" pb="3" size="lg">Garde Manger </Heading> 
               <Spacer />
+              <Pressable 
+                onPress={() => setIsSearchActive(!isSearchActive)}
+                style={styles.shareButton}
+                _pressed={{
+                    opacity: 0.5
+                  }} >
+              <Icon style={styles.containerIcon} size="sm" as={<MaterialIcons name={"search"}/>} color="black" />
+              </Pressable>
               <Pressable 
                 onPress={() => navigation.navigate('QRCodeScreen', {
                   type: "GardeManger",
@@ -121,6 +149,10 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: windowH / 3,
     paddingLeft: 30
+  },
+  searchField: {
+    paddingLeft: 30,
+    width: windowW
   }
   
 });

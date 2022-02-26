@@ -12,12 +12,14 @@ const slice = createSlice({
 
     addItem: (state, action) => {
       let newData = [...state.items]
-      const prevIndex = state.items.findIndex((item) => item.product_name === action.payload.product_name)
+      const prevIndex = state.items.findIndex((item) => item.isContainer ? item.container_name === action.payload.container_name : item.product_name === action.payload.product_name )
       //make sure we dont add the same item twice to gardeManger, just increase quantity
+      console.log(prevIndex)
       if (prevIndex >= 0) {
         newData[prevIndex].quantity =  newData[prevIndex].quantity + 1
         state.items = [...newData]
       } else {
+        console.log("mofo you should go here")
         state.items = [...newData, action.payload]
       }
     },
@@ -30,7 +32,8 @@ const slice = createSlice({
           newData[prevIndex].quantity =  newData[prevIndex].quantity - 1
           state.items = [...newData]
       }
-  },
+    },
+    
 
     editItem: (state, action) => {
       state.items = state.items.map(item => {
@@ -72,11 +75,34 @@ const slice = createSlice({
         }
       }
       state.items = newData
+    },
+
+    
+    searchGardeManger: (state, action) => {
+      const newData = [...state.items]
+      for(let i = 0; i < newData.length;i++){
+        if (!newData[i]?.product_name?.toLowerCase().includes(action.payload.toLowerCase())) {
+          newData[i].isHidden = true
+        } else if (newData[i]?.isContainer) {
+          newData[i].isHidden = true
+        } else {
+          newData[i].isHidden = false
+        }
+      }
+      state.items = newData
+    },
+
+    resetSearch: (state, action) => {
+      const newData = [...state.items]
+      for(let i = 0; i < newData.length;i++){
+        newData[i].isHidden = false
+      }
+      state.items = newData 
     }
   },
 });
 
 // Actions
-export const { setItems, addItem, editItem, removeItem, closeOpenContainer, reduceQuantity } = slice.actions
+export const { setItems, addItem, editItem, removeItem, closeOpenContainer, reduceQuantity, searchGardeManger, resetSearch } = slice.actions
 
 export default slice.reducer
