@@ -67,7 +67,7 @@ const  UnderlayRight = ({ item }) => {
                 justifyContent="center">
                 <Icon as={<MaterialCommunityIcons name="delete"/>} color='white'/>
             </Pressable>
-            <Pressable
+            {!item.isContainer && <Pressable
                 pl="4"
                 pr="5"
                 py="2"
@@ -78,7 +78,8 @@ const  UnderlayRight = ({ item }) => {
                 bg={colors.error}
                 justifyContent="center">
                 <Icon as={<MaterialIcons name="exposure-minus-1"/>} color="white" />
-              </Pressable>
+              </Pressable>}
+          
             </HStack>
         </TouchableOpacity>
       </Animated.View>
