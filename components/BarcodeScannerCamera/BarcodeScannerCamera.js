@@ -8,7 +8,7 @@ import { setItems } from '../../reducers/gardeMangerReducer';
 import { setHistory } from '../../reducers/historyReducer';
 import { addItem } from "../../reducers/gardeMangerReducer";
 
-export default function BarcodeScannerCamera({navigation}) {
+export default function BarcodeScannerCamera({navigation, route}) {
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [isScanned, setIsScanned] = useState(false)
