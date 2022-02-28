@@ -72,7 +72,7 @@ const UnderlayLeft = ({ item }) => {
                   }} 
                   bg={colors.green}
                   justifyContent="center">
-                  <Icon as={<MaterialCommunityIcons name="playlist-plus"/>} color="white" />
+                  <Icon as={<MaterialCommunityIcons name="cart-plus"/>} color="white" />
             </Pressable>
             </HStack>
           </TouchableOpacity>
