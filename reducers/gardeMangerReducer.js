@@ -19,7 +19,6 @@ const slice = createSlice({
         newData[prevIndex].quantity =  newData[prevIndex].quantity + 1
         state.items = [...newData]
       } else {
-        console.log("mofo you should go here")
         state.items = [...newData, action.payload]
       }
     },
@@ -27,14 +26,13 @@ const slice = createSlice({
     reduceQuantity: (state, action) => {
       let newData = [...state.items]
       const prevIndex = state.items.findIndex((item) => item.key === action.payload.key)
-      //make sure we dont add the same item twice to groceryList, just increase quantity
+      //reduce the quantity if current qty > 0
       if (prevIndex >= 0 && newData[prevIndex].quantity > 0) {
           newData[prevIndex].quantity =  newData[prevIndex].quantity - 1
           state.items = [...newData]
       }
     },
     
-
     editItem: (state, action) => {
       state.items = state.items.map(item => {
         if (item.key === action.payload.key) {
@@ -77,13 +75,10 @@ const slice = createSlice({
       state.items = newData
     },
 
-    
     searchGardeManger: (state, action) => {
-      const newData = [...state.items]
+      let newData = [...state.items]
       for(let i = 0; i < newData.length;i++){
         if (!newData[i]?.product_name?.toLowerCase().includes(action.payload.toLowerCase())) {
-          newData[i].isHidden = true
-        } else if (newData[i]?.isContainer) {
           newData[i].isHidden = true
         } else {
           newData[i].isHidden = false
@@ -93,9 +88,12 @@ const slice = createSlice({
     },
 
     resetSearch: (state, action) => {
-      const newData = [...state.items]
+      let newData = [...state.items]
       for(let i = 0; i < newData.length;i++){
         newData[i].isHidden = false
+        if (newData[i].isClosed) {
+          newData[i].isClosed = !newData[i].isClosed
+        }
       }
       state.items = newData 
     }
