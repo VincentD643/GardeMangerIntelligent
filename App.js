@@ -21,6 +21,7 @@ import BarcodeScannerCamera from "./components/BarcodeScannerCamera";
 import ProductForm from "./components/ProductForm";
 import ContainerForm from "./components/ContainerForm"
 import QRCodeScreen from "./components/QRCodeScreen"
+import Notification from "./components/Notification";
 
 export const config = {
   ...colors,
@@ -52,12 +53,14 @@ const GardeMangerScreen = () => {
 
 //https://reactnavigation.org/docs/bottom-tab-navigator/ pour les options du tab nav
 //https://icons.expo.fyi/ pour les icones, essayez d'utiliser MaterialCommunityIcons
-export default function App() {
+export default function App(){
+
   return (
     <Provider store={store}>
       <PersistGate loading={<View><Text>Loading...</Text></View>} persistor={persistor}>
+        <Notification/>
         <NativeBaseProvider contentContainerStyle={{ flexGrow: 1 }} theme={theme}>
-          <NavigationContainer>
+            <NavigationContainer>
             <Tab.Navigator
               screenOptions={{
                 headerShown: false
@@ -87,5 +90,6 @@ export default function App() {
         </NativeBaseProvider>
       </PersistGate>
     </Provider>
+
   );
 }
