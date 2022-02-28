@@ -54,7 +54,7 @@ const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
              <HStack style={styles.item} alignItems="center" space={3} >
               <Avatar size="48px" source={item?.product_url ? { uri: item.product_url} : chicken}>NA</Avatar>
                 <VStack>
-                  <Text color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
+                  <Text style={styles.productName} numberOfLines={1} color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
                     {item.product_name}
                   </Text>
                   {item.expiration_date ? 
@@ -109,6 +109,9 @@ const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
       backgroundColor: "tomato",
       justifyContent: "flex-end",
     },
+    productName: {
+      maxWidth: windowW / 2
+    }
   });
   
 
