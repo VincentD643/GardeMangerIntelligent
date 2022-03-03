@@ -9,6 +9,7 @@ import {
   Spacer,
 } from "native-base"
 import {
+  Dimensions,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
@@ -17,6 +18,7 @@ import { ScaleDecorator} from "react-native-draggable-flatlist";
 import UnderLayLeftHistory from "./UnderLayLeftHistory"
 import UnderLayRightHistory from "./UnderLayRightHistory"
 const chicken = require('../../assets/chicken.png');
+const windowW = Dimensions.get('window').width;
 
 const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
     const formatDate = (date) => {
