@@ -71,7 +71,7 @@ const slice = createSlice({
       //le last index est seulement l'index de la seconde partie de l'array items. On doit ajouter le firstIndex 
       //pour avoir le vrai last index. Si le resultat est trop grand, ca signifie qu'on fait jusqu'a la fin et on 
       //a deja donné l'index du dernier si c'est le cas. 
-      lastIndex = lastIndex + firstIndex > lastIndex ? lastIndex : lastIndex + firstIndex
+      lastIndex = lastIndex + firstIndex > state.items.length - 1 ? state.items.length - 1 : lastIndex + firstIndex
       //on cache les items qui sont pas des containers et on set le container a fermer ou ouvert.
       for (let i = firstIndex; i <= lastIndex; i++) {
         if (!newData[i].isContainer) {
