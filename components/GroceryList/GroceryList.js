@@ -1,21 +1,16 @@
 import React, {useCallback, useRef} from "react";
 import {
-    Box,
-    Divider,
-    Fab,
     Heading,
     HStack,
     Icon,
-    Menu,
     Pressable,
     Spacer,
     View
 } from "native-base"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useSelector, useDispatch } from 'react-redux';
-
 import DraggableFlatList from "react-native-draggable-flatlist";
-import RowItem from "../DraggableSwipeList/RowItem";
+import RowItemGroceryList from "../DraggableSwipeListGroceryList/RowItemGroceryList"
 import { setItems } from "../../reducers/groceryListReducer";
 import {Platform, StyleSheet, UIManager} from "react-native";
 
@@ -34,7 +29,7 @@ const GroceryList = ({navigation}) => {
             ...params,
             navigation
         }
-        return <RowItem {...RowItemProps} itemRefs={itemRefs} />;
+        return <RowItemGroceryList {...RowItemProps} itemRefs={itemRefs} />;
     }, []);
 
     return (

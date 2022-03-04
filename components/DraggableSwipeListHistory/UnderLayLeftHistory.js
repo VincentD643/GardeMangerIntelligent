@@ -6,22 +6,32 @@ import {
 } from "native-base"
 import {
   TouchableOpacity,
-  StyleSheet
+  StyleSheet,
+  ToastAndroid
 } from "react-native";
 import { useDispatch } from 'react-redux';
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import {useSwipeableItemParams } from "react-native-swipeable-item";
 import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { addItem } from "../../reducers/groceryListReducer";
 
 const UnderLayLeftHistory = ({ item, navigation }) => {
     const dispatch = useDispatch();
     const { it, percentOpen } = useSwipeableItemParams();
+
     const animStyle = useAnimatedStyle(
       () => ({
         opacity: percentOpen.value,
       }),
       [percentOpen]
     );
+
+    const addGroceryList = () => {
+      dispatch(addItem(item))
+      if (Platform.OS === "android") {
+        ToastAndroid.show('Produit ajouté à la liste d\'épicerie.', ToastAndroid.SHORT);
+      }
+    }
     return (
         <Animated.View
           style={[styles.row, styles.underlayLeft, animStyle]} // Fade in on open
@@ -32,7 +42,7 @@ const UnderLayLeftHistory = ({ item, navigation }) => {
                     pl="4"
                     pr="5"
                     py="2"
-                    onPress={() => console.log("send to liste epicerie")}  
+                    onPress={() => addGroceryList()}  
                     _pressed={{
                         opacity: 0.5
                     }} 

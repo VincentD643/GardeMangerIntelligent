@@ -11,7 +11,29 @@ const slice = createSlice({
         },
 
         addItem: (state, action) => {
-            state.items = [...state.items, action.payload]
+            let newData = [...state.items]
+            const prevIndex = state.items.findIndex((item) => item.key === action.payload.key)
+            //make sure we dont add the same item twice to groceryList, just increase quantity
+            if (prevIndex >= 0) {
+                newData[prevIndex].quantity =  newData[prevIndex].quantity + 1
+                state.items = [...newData]
+            } else {
+                const newProduct = {
+                    ...action.payload,
+                    quantity: 1
+                }
+                state.items = [...newData, newProduct]
+            }
+        },
+        
+        reduceQuantity: (state, action) => {
+            let newData = [...state.items]
+            const prevIndex = state.items.findIndex((item) => item.key === action.payload.key)
+            //make sure we dont add the same item twice to groceryList, just increase quantity
+            if (prevIndex >= 0 && newData[prevIndex].quantity > 0) {
+                newData[prevIndex].quantity =  newData[prevIndex].quantity - 1
+                state.items = [...newData]
+            }
         },
 
         editItem: (state, action) => {
@@ -33,6 +55,6 @@ const slice = createSlice({
 });
 
 // Actions
-export const { setItems, addItem, editItem, removeItem } = slice.actions
+export const { setItems, addItem, editItem, removeItem, reduceQuantity } = slice.actions
 
 export default slice.reducer

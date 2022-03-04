@@ -25,12 +25,13 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#8971D0"
       },
-      "package": "com.LO795.GardeMangerIntelligent"
+      "package": "com.LO795.GardeMangerIntelligent",
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
+
     ]
   }
 }

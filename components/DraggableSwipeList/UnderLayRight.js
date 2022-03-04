@@ -1,28 +1,19 @@
 import React from "react";
 import {
     Icon,
-    Heading,
-    Box,
-    Text,
     Pressable,
     HStack,
-    Avatar,
-    VStack,
-    Spacer,
-    Fab,
-    Divider,
-    Menu,
-    Center
   } from "native-base"
 import {
     TouchableOpacity,
-    StyleSheet
+    StyleSheet,
+    ToastAndroid,
   } from "react-native";
 import { useDispatch } from 'react-redux';
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
-import { MaterialCommunityIcons } from "@expo/vector-icons"
+import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import {useSwipeableItemParams } from "react-native-swipeable-item";
-import { removeItem } from "../../reducers/gardeMangerReducer";
+import { removeItem, reduceQuantity } from "../../reducers/gardeMangerReducer";
 import { closeOpenContainer } from "../../reducers/gardeMangerReducer";
 import { addHistory } from "../../reducers/historyReducer";
 
@@ -37,6 +28,14 @@ const  UnderlayRight = ({ item }) => {
       [percentOpen]
     );
 
+    const decrementQuantity = () => {
+      dispatch(reduceQuantity(item))
+      if (Platform.OS === "android") {
+        const newQty = item.quantity - 1
+        ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
+      }
+    }
+    
     const deleteProduct = () => {
         close();
         if (item.isContainer && item.isClosed) {
@@ -46,11 +45,15 @@ const  UnderlayRight = ({ item }) => {
           dispatch(addHistory(item))
         }
         dispatch(removeItem(item))
+        if (Platform.OS === "android") {
+          ToastAndroid.show('Produit/Séparateur supprimé.', ToastAndroid.SHORT);
+        }
     };
 
     return (
       <Animated.View style={[styles.row, styles.underlayRight, animStyle]}>
         <TouchableOpacity onPressOut={close}>
+          <HStack>
             <Pressable 
                 pl="4"
                 pr="5"
@@ -64,6 +67,20 @@ const  UnderlayRight = ({ item }) => {
                 justifyContent="center">
                 <Icon as={<MaterialCommunityIcons name="delete"/>} color='white'/>
             </Pressable>
+            {!item.isContainer && <Pressable
+                pl="4"
+                pr="5"
+                py="2"
+                onPress={() => decrementQuantity()}  
+                _pressed={{
+                    opacity: 0.5
+                }} 
+                bg={colors.error}
+                justifyContent="center">
+                <Icon as={<MaterialIcons name="exposure-minus-1"/>} color="white" />
+              </Pressable>}
+          
+            </HStack>
         </TouchableOpacity>
       </Animated.View>
     );

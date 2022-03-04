@@ -57,8 +57,8 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
         }}
         renderUnderlayLeft={() => !item.isContainer && <UnderlayLeft item={item} />}
         renderUnderlayRight={() => <UnderlayRight item={item} />}
-        snapPointsLeft={item.isContainer ? [0] : [50]}
-        snapPointsRight={[50]}
+        snapPointsLeft={item.isContainer ? [0] : [120]}
+        snapPointsRight={item.isContainer ? [50] : [120]}
       >
         <View style={styles.row}>
           
@@ -86,7 +86,7 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
              <HStack style={styles.item} alignItems="center" space={3} >
                 <Avatar size="48px" source={item?.product_url ? { uri: item.product_url} : chicken}>NA</Avatar>
                 <VStack>
-                  <Text color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
+                  <Text style={styles.productName} numberOfLines={1} color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
                     {item.product_name}
                   </Text>
                   {item.expiration_date ? 
@@ -152,6 +152,9 @@ const RowItem = ({ item, drag, itemRefs, navigation }) => {
     },
     containerTitle: {
       color: 'black',
+    },
+    productName: {
+      maxWidth: windowW / 2
     }
   });
   

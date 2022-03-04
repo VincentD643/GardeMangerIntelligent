@@ -9,6 +9,7 @@ import {
   Spacer,
 } from "native-base"
 import {
+  Dimensions,
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
@@ -16,6 +17,8 @@ import SwipeableItem from "react-native-swipeable-item";
 import { ScaleDecorator} from "react-native-draggable-flatlist";
 import UnderLayLeftHistory from "./UnderLayLeftHistory"
 import UnderLayRightHistory from "./UnderLayRightHistory"
+const chicken = require('../../assets/chicken.png');
+const windowW = Dimensions.get('window').width;
 
 const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
     const formatDate = (date) => {
@@ -51,9 +54,9 @@ const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
           <TouchableOpacity onPressIn={drag}>
           <Pressable onPressIn={drag}>
              <HStack style={styles.item} alignItems="center" space={3} >
-                <Avatar size="48px" source={{uri: item.product_url}}>NA</Avatar>
+              <Avatar size="48px" source={item?.product_url ? { uri: item.product_url} : chicken}>NA</Avatar>
                 <VStack>
-                  <Text color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
+                  <Text style={styles.productName} numberOfLines={1} color="coolGray.800"  _dark={{ color: 'warmGray.50' }}  bold>
                     {item.product_name}
                   </Text>
                   {item.expiration_date ? 
@@ -108,6 +111,9 @@ const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
       backgroundColor: "tomato",
       justifyContent: "flex-end",
     },
+    productName: {
+      maxWidth: windowW / 2
+    }
   });
   
 
