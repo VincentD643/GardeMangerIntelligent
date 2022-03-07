@@ -51,7 +51,7 @@ const GardeManger = ({ navigation }) => {
         return (
           <HStack style={styles.header}>
             <Heading p="4" pb="3" size="lg">
-            History
+            Historique
             </Heading>
             <Spacer />
             <Pressable 

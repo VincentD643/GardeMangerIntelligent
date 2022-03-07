@@ -54,13 +54,13 @@ const ProductForm = ({ navigation, route }) => {
         if (name === undefined) {
           setErrors({
             ...errors,
-            name: 'Name is required',
+            name: 'Name est requis',
           });
           return false;
         } else if (name.length < 3) {
           setErrors({
             ...errors,
-            name: 'Name is too short',
+            name: 'Name est trop court',
           });
           return false;
         }
@@ -123,16 +123,16 @@ const ProductForm = ({ navigation, route }) => {
         console.log("name", name)
         return (
             <FormControl isRequired isInvalid={'name' in errors}>
-                <FormControl.Label _text={{bold: true}}>Product Name</FormControl.Label>
+                <FormControl.Label _text={{bold: true}}>Nom du produit</FormControl.Label>
                 <Input
                 value={name}
                 placeholder="Apple"
                 onChangeText={(value) => setName(value)}
                 />
                 {'name' in errors ?
-                <FormControl.ErrorMessage _text={{fontSize: 'xs', color: 'error.500', fontWeight: 500}}>Error</FormControl.ErrorMessage>:
+                <FormControl.ErrorMessage _text={{fontSize: 'xs', color: 'error.500', fontWeight: 500}}>Erreur</FormControl.ErrorMessage>:
                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                Name should contain atleast 3 character.
+                Nom doit contenir au moins 3 caractères.
                 </FormControl.HelperText>
                 }
             </FormControl>
@@ -143,7 +143,7 @@ const ProductForm = ({ navigation, route }) => {
     const quantityInput = () => {
         return (
             <FormControl>
-                <FormControl.Label _text={{bold: true}}>Quantity</FormControl.Label>
+                <FormControl.Label _text={{bold: true}}>Quantité</FormControl.Label>
                 <NumberInput  defaultValue={quantity} min="1" onChange={(value) => setQuantity(value)}>
                 <NumberInputField />
                 <NumberInputStepper>
@@ -159,7 +159,7 @@ const ProductForm = ({ navigation, route }) => {
     const expirationDateInput = () => {
         return (
             <FormControl>
-            <FormControl.Label _text={{bold: true}}>Expiration Date</FormControl.Label>
+            <FormControl.Label _text={{bold: true}}>Date d'expiration</FormControl.Label>
             <HStack alignItems="center" space={4}>
                 <Checkbox 
                     accessibilityLabel="Track expiration date ?" 
@@ -197,7 +197,7 @@ const ProductForm = ({ navigation, route }) => {
       <StyledHistory>
         <Center>
             <Heading>
-                Add a product
+                Ajouter un produit
             </Heading>
         </Center>
          <VStack width="90%" mx="3">
@@ -205,7 +205,7 @@ const ProductForm = ({ navigation, route }) => {
             {quantityInput()}
             {expirationDateInput()}
             <Button onPress={onSubmit} mt="5" colorScheme="cyan">
-                Submit
+                Soumettre
             </Button>
             </VStack>
       </StyledHistory>

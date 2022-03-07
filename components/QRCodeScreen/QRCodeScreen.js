@@ -31,7 +31,7 @@ const copyToClipboard = (items) => {
   }
   Clipboard.setString(groceryListString);
   if (Platform.OS === "android") {
-    ToastAndroid.show('Liste Copier dans le presse-papier.', ToastAndroid.SHORT);
+    ToastAndroid.show('Liste copiée dans le presse-papier.', ToastAndroid.SHORT);
   }
   
 };

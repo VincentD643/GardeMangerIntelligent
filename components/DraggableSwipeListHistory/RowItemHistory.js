@@ -61,12 +61,12 @@ const RowItemHistory = ({ item, drag, itemRefs, navigation }) => {
                   </Text>
                   {item.expiration_date ? 
                   <Text>
-                    Expiration Date: {formatDate(item.expiration_date)}
-                  </Text> : <Text>No expiration</Text>}
+                    Date d'expiration: {formatDate(item.expiration_date)}
+                  </Text> : <Text>Pas d'expiration</Text>}
                 </VStack>
                 <Spacer />
                 <Text fontSize="xs" color="coolGray.800"  _dark={{ color: 'warmGray.50' }}>
-                  Qty: {item.quantity}
+                  Qté: {item.quantity}
                 </Text>
               </HStack>
           </Pressable>
