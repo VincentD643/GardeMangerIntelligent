@@ -55,7 +55,7 @@ const ContainerForm = ({ navigation }) => {
         console.log("name", name)
         return (
             <FormControl isRequired isInvalid={'name' in errors}>
-                <FormControl.Label _text={{bold: true}}>Container Name</FormControl.Label>
+                <FormControl.Label _text={{bold: true}}>Nom du diviseur</FormControl.Label>
                 <Input
                 value={name}
                 placeholder="Produits Laitiers"
