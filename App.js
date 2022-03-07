@@ -57,7 +57,7 @@ export default function App(){
 
   return (
     <Provider store={store}>
-      <PersistGate loading={<View><Text>Loading...</Text></View>} persistor={persistor}>
+      <PersistGate loading={<View><Text>Chargement...</Text></View>} persistor={persistor}>
         <Notification/>
         <NativeBaseProvider contentContainerStyle={{ flexGrow: 1 }} theme={theme}>
             <NavigationContainer>
