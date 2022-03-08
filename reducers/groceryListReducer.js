@@ -45,6 +45,10 @@ const slice = createSlice({
             })
         },
 
+        removeAllItems: (state, action) => {
+            state.items = [];
+        },
+
         removeItem: (state, action) => {
             const newData = [...state.items]
             const prevIndex = state.items.findIndex((item) => item.key === action.payload.key)
@@ -55,6 +59,6 @@ const slice = createSlice({
 });
 
 // Actions
-export const { setItems, addItem, editItem, removeItem, reduceQuantity } = slice.actions
+export const { setItems, addItem, editItem, removeItem, reduceQuantity, removeAllItems } = slice.actions
 
 export default slice.reducer

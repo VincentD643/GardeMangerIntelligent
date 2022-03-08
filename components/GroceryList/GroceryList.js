@@ -5,13 +5,17 @@ import {
     Icon,
     Pressable,
     Spacer,
-    View
+    View,
+    Box,
+    Menu,
+    Divider,
+    Fab, Button
 } from "native-base"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useSelector, useDispatch } from 'react-redux';
 import DraggableFlatList from "react-native-draggable-flatlist";
 import RowItemGroceryList from "../DraggableSwipeListGroceryList/RowItemGroceryList"
-import { setItems } from "../../reducers/groceryListReducer";
+import { setItems, removeAllItems } from "../../reducers/groceryListReducer";
 import {Platform, StyleSheet, UIManager} from "react-native";
 
 if (Platform.OS === "android") {
@@ -62,30 +66,33 @@ const GroceryList = ({navigation}) => {
                 onDragEnd={({ data }) => dispatch(setItems(data))}
                 activationDistance={20}
             />
-            {/*TODO : Adapt the navigation for the gocery list*/}
-            {/*<Box position="relative" h={100} w="100%">*/}
-            {/*    <Menu*/}
-            {/*        closeOnSelect={true}*/}
-            {/*        w="160"*/}
-            {/*        trigger={(triggerProps) => {*/}
-            {/*            return (*/}
-            {/*                <Fab*/}
-            {/*                    {...triggerProps}*/}
-            {/*                    position="absolute"*/}
-            {/*                    bottom={70}*/}
-            {/*                    size="sm"*/}
-            {/*                    icon={<Icon color="white" as={<MaterialCommunityIcons name="plus" />} size="sm" />}*/}
-            {/*                />*/}
-            {/*            )*/}
-            {/*        }}*/}
-            {/*    >*/}
-            {/*        <Menu.Item value="Roboto" onPress={() => navigation.navigate('BarcodeScannerCamera')}>Scan Product</Menu.Item>*/}
-            {/*        <Divider/>*/}
-            {/*        <Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Add Product Manually</Menu.Item>*/}
-            {/*        <Divider/>*/}
-            {/*        <Menu.Item value="Arial" onPress={() => navigation.navigate('ContainerForm')}>Add Divider</Menu.Item>*/}
-            {/*    </Menu>*/}
-            {/*</Box>*/}
+            <Box position="relative" h={100} w="100%">
+                <Menu
+                    closeOnSelect={true}
+                    w="160"
+                    trigger={(triggerProps) => {
+                        return (
+                            <Button {...triggerProps} style={styles.menuButton}>
+                                {<Icon color="white" as={<MaterialCommunityIcons name="plus"/>} size="sm"/>}
+                            </Button>
+                        )
+                    }}
+                >
+                    {/*TODO : Adapter le code pour permettre l'ajout dans la liste d'épicerie.*/}
+                    {/*<Menu.Item value="Roboto"*/}
+                    {/*           onPress={() => navigation.navigate('BarcodeScannerCamera', {scanType: "completeScan"})}>Scan*/}
+                    {/*    complet</Menu.Item>*/}
+                    {/*<Divider/>*/}
+                    {/*<Menu.Item value="Roboto"*/}
+                    {/*           onPress={() => navigation.navigate('BarcodeScannerCamera', {scanType: "fastScan"})}>Scan*/}
+                    {/*    rapide</Menu.Item>*/}
+                    {/*<Divider/>*/}
+                    {/*<Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Ajout produit*/}
+                    {/*    manuel</Menu.Item>*/}
+                    {/*<Divider/>*/}
+                    <Menu.Item value="Arial" onPress={() => dispatch(removeAllItems())}>Vider la liste d'épicerie</Menu.Item>
+                </Menu>
+            </Box>
         </View>
     )
 };
