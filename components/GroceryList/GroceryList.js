@@ -97,17 +97,23 @@ const GroceryList = ({navigation}) => {
     )
 };
 
-    const styles = StyleSheet.create({
-        container: {
-            flex: 1,
-        },
-        header: {
-            paddingRight: 15,
-        },
-        shareButton: {
-            top: 20,
-        }
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+    },
+    header: {
+        paddingRight: 15,
+    },
+    menuButton:{
+        position:"absolute",
+        borderRadius:50,
+        right:0,
+        marginRight:30,
+        top:330,
+        width: 65,
+        height: 65,
+    }
 
-    });
+});
 
 export default GroceryList;
