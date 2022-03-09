@@ -55,41 +55,41 @@ const GardeMangerScreen = () => {
 //https://icons.expo.fyi/ pour les icones, essayez d'utiliser MaterialCommunityIcons
 export default function App() {
 
-    return (
-        <Provider store={store}>
-            <PersistGate loading={<View><Text>Loading...</Text></View>} persistor={persistor}>
-                <Notification/>
-                <NativeBaseProvider contentContainerStyle={{flexGrow: 1}} theme={theme}>
-                    <NavigationContainer>
-                        <Tab.Navigator
-                            screenOptions={{
-                                headerShown: false
-                            }}>
-                            <Tab.Screen name="GardeMangerScreen" component={GardeMangerScreen} options={{
-                                title: 'Garde Manger',
-                                tabBarIcon: ({color, size}) => (
-                                    <Icon as={MaterialCommunityIcons} name="food-apple" color={color} size={size}/>
-                                ),
-                            }}/>
-                            <Tab.Screen name="GroceryList" component={GroceryList} options={{
-                                title: 'Liste d\'épicerie',
-                                tabBarIcon: ({color, size}) => (
-                                    <Icon as={MaterialCommunityIcons} name="cart-outline" color={color} size={size}/>
-                                ),
-                            }}
-                            />
-                            <Tab.Screen name="History" component={History} options={{
-                                title: 'Historique',
-                                tabBarIcon: ({color, size}) => (
-                                    <Icon as={MaterialCommunityIcons} name="history" color={color} size={size}/>
-                                ),
-                            }}
-                            />
-                        </Tab.Navigator>
-                    </NavigationContainer>
-                </NativeBaseProvider>
-            </PersistGate>
-        </Provider>
+  return (
+    <Provider store={store}>
+      <PersistGate loading={<View><Text>Chargement...</Text></View>} persistor={persistor}>
+        <Notification/>
+        <NativeBaseProvider contentContainerStyle={{ flexGrow: 1 }} theme={theme}>
+            <NavigationContainer>
+            <Tab.Navigator
+              screenOptions={{
+                headerShown: false
+              }}>
+              <Tab.Screen  name="GardeMangerScreen" component={GardeMangerScreen} options={{
+                title: 'Garde Manger',
+                tabBarIcon: ({ color, size }) => (
+                  <Icon as={MaterialCommunityIcons} name="food-apple" color={color} size={size} />
+                ),
+                }}/>
+              <Tab.Screen name="GroceryList" component={GroceryList} options={{
+                title: 'Liste d\'épicerie',
+                tabBarIcon: ({ color, size }) => (
+                  <Icon as={MaterialCommunityIcons} name="cart-outline" color={color} size={size} />
+                ),
+                }}
+            />
+              <Tab.Screen name="History" component={History} options={{
+                title: 'Historique',
+                tabBarIcon: ({ color, size }) => (
+                  <Icon as={MaterialCommunityIcons} name="history" color={color} size={size} />
+                ),
+                }}
+              />
+            </Tab.Navigator>
+          </NavigationContainer>
+        </NativeBaseProvider>
+      </PersistGate>
+    </Provider>
 
     );
 }
