@@ -19,7 +19,17 @@ const slice = createSlice({
             ...action.payload,
             quantity: 1
           }
-          state.items = [...newData, newProduct]
+          //A new product is added to the top of the history list
+          state.items = [newProduct, ...newData]
+        }
+        //if item already exists, bump it to the top of the history
+        else{
+          //pop item from array
+          const i = newData[prevIndex]
+          newData.splice(prevIndex, 1)
+          //move it to the top of the history
+          newData.splice(0, 0, i)
+          state.items = newData
         }
     },
 
