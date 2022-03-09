@@ -27,13 +27,13 @@ const ContainerForm = ({ navigation }) => {
         if (name === undefined) {
           setErrors({
             ...errors,
-            name: 'Name is required',
+            name: 'Nom est requis',
           });
           return false;
         } else if (name.length < 3) {
           setErrors({
             ...errors,
-            name: 'Name is too short',
+            name: 'Nom est trop court',
           });
           return false;
         }
@@ -55,16 +55,16 @@ const ContainerForm = ({ navigation }) => {
         console.log("name", name)
         return (
             <FormControl isRequired isInvalid={'name' in errors}>
-                <FormControl.Label _text={{bold: true}}>Container Name</FormControl.Label>
+                <FormControl.Label _text={{bold: true}}>Nom du diviseur</FormControl.Label>
                 <Input
                 value={name}
                 placeholder="Produits Laitiers"
                 onChangeText={(value) => setName(value)}
                 />
                 {'name' in errors ?
-                <FormControl.ErrorMessage _text={{fontSize: 'xs', color: 'error.500', fontWeight: 500}}>Error</FormControl.ErrorMessage>:
+                <FormControl.ErrorMessage _text={{fontSize: 'xs', color: 'error.500', fontWeight: 500}}>Erreur</FormControl.ErrorMessage>:
                 <FormControl.HelperText _text={{fontSize: 'xs'}}>
-                Name should contain atleast 3 character.
+                Nom doit contenir au moins 3 caractères.
                 </FormControl.HelperText>
                 }
             </FormControl>
@@ -75,13 +75,13 @@ const ContainerForm = ({ navigation }) => {
       <StyledContainerFormView>
         <Center>
             <Heading>
-                Add a divider
+                Ajouter un diviseur
             </Heading>
         </Center>
          <VStack width="90%" mx="3">
             {nameInput()}
             <Button onPress={onSubmit} mt="5" colorScheme="cyan">
-                Submit
+                Soumettre
             </Button>
             </VStack>
       </StyledContainerFormView>

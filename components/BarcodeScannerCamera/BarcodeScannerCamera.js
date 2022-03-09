@@ -84,10 +84,10 @@ export default function BarcodeScannerCamera({navigation, route}) {
   };
 
   if (hasPermission === null) {
-    return <Text>Requesting for camera permission</Text>;
+    return <Text>Demande de permission pour accéder à la caméra</Text>;
   }
   if (hasPermission === false) {
-    return <Text>No access to camera</Text>;
+    return <Text>Pas d'accès à la caméra</Text>;
   }
 
   return (
@@ -115,7 +115,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
                  : Camera.Constants.Type.back
              );
            }}>
-           <Text style={styles.text}> Flip </Text>
+           <Text style={styles.text}> Tourner </Text>
          </TouchableOpacity>
        </View>
      </Camera>
