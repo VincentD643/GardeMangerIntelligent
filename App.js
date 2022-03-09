@@ -1,17 +1,17 @@
 import React from "react";
-import { View, Text } from 'react-native' 
-import { Provider } from 'react-redux';
-import { PersistGate } from 'redux-persist/integration/react'
-import { persistStore } from 'redux-persist'
+import {View, Text} from 'react-native'
+import {Provider} from 'react-redux';
+import {PersistGate} from 'redux-persist/integration/react'
+import {persistStore} from 'redux-persist'
 import {
-  NativeBaseProvider,
-  extendTheme,
-  Icon,
+    NativeBaseProvider,
+    extendTheme,
+    Icon,
 } from "native-base";
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createNativeStackNavigator  } from '@react-navigation/native-stack';
-import { MaterialCommunityIcons } from "@expo/vector-icons"
+import {NavigationContainer} from '@react-navigation/native';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+import {MaterialCommunityIcons} from "@expo/vector-icons"
 import store from "./reducers/store"
 import colors from "./theme"
 import GardeManger from "./components/GardeManger";
@@ -24,9 +24,9 @@ import QRCodeScreen from "./components/QRCodeScreen"
 import Notification from "./components/Notification";
 
 export const config = {
-  ...colors,
-  useSystemColorMode: false,
-  initialColorMode: 'dark',
+    ...colors,
+    useSystemColorMode: false,
+    initialColorMode: 'dark',
 }
 
 // Define the config
@@ -38,22 +38,22 @@ const Tab = createBottomTabNavigator();
 const ProductFormStack = createNativeStackNavigator();
 const GardeMangerScreen = () => {
     return (
-      <ProductFormStack.Navigator
-        screenOptions={{
-          headerShown: false
-        }}>
-        <ProductFormStack.Screen name="GardeManger" component={GardeManger} />
-        <ProductFormStack.Screen name="ProductForm" component={ProductForm} />
-        <ProductFormStack.Screen name="ContainerForm" component={ContainerForm}/>
-        <ProductFormStack.Screen name="BarcodeScannerCamera" component={BarcodeScannerCamera} />
-        <ProductFormStack.Screen name="QRCodeScreen" component={QRCodeScreen}/>
-      </ProductFormStack.Navigator>
+        <ProductFormStack.Navigator
+            screenOptions={{
+                headerShown: false
+            }}>
+            <ProductFormStack.Screen name="GardeManger" component={GardeManger}/>
+            <ProductFormStack.Screen name="ProductForm" component={ProductForm}/>
+            <ProductFormStack.Screen name="ContainerForm" component={ContainerForm}/>
+            <ProductFormStack.Screen name="BarcodeScannerCamera" component={BarcodeScannerCamera}/>
+            <ProductFormStack.Screen name="QRCodeScreen" component={QRCodeScreen}/>
+        </ProductFormStack.Navigator>
     );
 }
 
 //https://reactnavigation.org/docs/bottom-tab-navigator/ pour les options du tab nav
 //https://icons.expo.fyi/ pour les icones, essayez d'utiliser MaterialCommunityIcons
-export default function App(){
+export default function App() {
 
   return (
     <Provider store={store}>
@@ -91,5 +91,5 @@ export default function App(){
       </PersistGate>
     </Provider>
 
-  );
+    );
 }

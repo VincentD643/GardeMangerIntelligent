@@ -136,25 +136,32 @@ const GardeManger = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  header: {
-    paddingRight: 15,
-  },
-  shareButton: {
-    top: 20,
-  },
-  helperText: {
-    flex: 1,
-    paddingTop: windowH / 3,
-    paddingLeft: 30
-  },
-  searchField: {
-    paddingLeft: 30,
-    width: windowW
-  }
-  
+    container: {
+        flex: 1,
+    },
+    header: {
+        paddingRight: 15,
+    },
+    shareButton: {
+        top: 20,
+    },
+    helperText: {
+        flex: 1,
+        paddingTop: windowH / 3,
+        paddingLeft: 30
+    },
+    searchField: {
+        paddingLeft: 30,
+        width: windowW
+    },
+    menuButton: {
+        position: "relative",
+        borderRadius: 40,
+        left: windowW - 100,
+        width: 60,
+        height: 60,
+    }
+
 });
 
 export default GardeManger;
