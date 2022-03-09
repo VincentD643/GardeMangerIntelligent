@@ -158,14 +158,12 @@ const styles = StyleSheet.create({
         paddingLeft: 30,
         width: windowW
     },
-    menuButton:{
-        position:"absolute",
-        borderRadius:50,
-        right:0,
-        marginRight:30,
-        top:330,
-        width: 65,
-        height: 65,
+    menuButton: {
+        position: "relative",
+        borderRadius: 40,
+        left: windowW - 100,
+        width: 60,
+        height: 60,
     }
 
 });
