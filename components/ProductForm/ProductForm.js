@@ -22,6 +22,7 @@ import 'react-native-get-random-values'
 import { v4 as uuidv4 } from 'uuid';
 import { addItem, editItem } from "../../reducers/gardeMangerReducer";
 import StyledHistory from "./styled";
+import {addHistory} from "../../reducers/historyReducer";
 
 const ProductForm = ({ navigation, route }) => {
     
@@ -82,11 +83,16 @@ const ProductForm = ({ navigation, route }) => {
             formData = {...formData, expiration_date: date.toString()}
         }
         console.log("formdata", formData)
+        // TODO : Wrap validate
         if (!isEdit) {
-            validate() ? dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false})) : console.log('Validation Failed');
+            const key = uuidv4();
+            validate() ? dispatch(addItem({...formData, key: key, isContainer: false, isHidden: false})) : console.log('Validation Failed');
+            validate() ? dispatch(addHistory({...formData, key: key, isContainer: false, isHidden: false})) : console.log('Validation Failed');
         } else {
             validate() ? dispatch(editItem({...formData, key: product.key, isContainer: false, isHidden: false})) : console.log('Validation Failed');
+            validate() ? dispatch(addHistory({...formData, key: product.key, isContainer: false, isHidden: false})) : console.log('Validation Failed');
         }
+
         navigation.navigate('GardeManger')
     };
     

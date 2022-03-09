@@ -15,16 +15,12 @@ const slice = createSlice({
       let newData = [...state.items]
       const prevIndex = state.items.findIndex((item) => item.isContainer ? item.container_name === action.payload.container_name : item.product_name === action.payload.product_name )
       //make sure we dont add the same item twice to gardeManger, just increase quantity
-      console.log(prevIndex)
       if (prevIndex >= 0) {
         newData[prevIndex].quantity =  newData[prevIndex].quantity + 1
         state.items = [...newData]
       } else {
         state.items = [...newData, action.payload]
       }
-
-      // Update history
-      addHistory(item)
     },
 
     reduceQuantity: (state, action) => {
@@ -34,9 +30,6 @@ const slice = createSlice({
       if (prevIndex >= 0 && newData[prevIndex].quantity > 0) {
           newData[prevIndex].quantity =  newData[prevIndex].quantity - 1
           state.items = [...newData]
-
-        // Update history
-        addHistory(item)
       }
     },
     
@@ -45,9 +38,6 @@ const slice = createSlice({
         if (item.key === action.payload.key) {
           return action.payload;
         }
-        // Update history
-        addHistory(item)
-
         return item;
       })
     },
@@ -57,9 +47,6 @@ const slice = createSlice({
       const prevIndex = state.items.findIndex((item) => item.key === action.payload.key)
       newData.splice(prevIndex, 1)
       state.items = newData
-
-      // Update history
-      addHistory(item)
     },
 
     /*On a besoin d'une facon de cacher des items selon certaines conditions a la place de modifier la liste

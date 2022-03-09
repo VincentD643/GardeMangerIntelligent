@@ -5,7 +5,7 @@ import axios from 'axios'
 import { useDispatch } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
 import { setItems } from '../../reducers/gardeMangerReducer';
-import { setHistory } from '../../reducers/historyReducer';
+import {addHistory, setHistory} from '../../reducers/historyReducer';
 import { addItem } from "../../reducers/gardeMangerReducer";
 
 export default function BarcodeScannerCamera({navigation, route}) {
@@ -61,6 +61,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
         isHidden: false,
       }
       dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
+      dispatch(addHistory({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
       navigation.navigate('GardeManger')
     }
    

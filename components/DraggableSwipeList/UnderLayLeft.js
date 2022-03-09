@@ -15,6 +15,7 @@ import {useSwipeableItemParams } from "react-native-swipeable-item";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import { addItem } from "../../reducers/groceryListReducer";
 import { addItem as addItemGardeManger } from "../../reducers/gardeMangerReducer"
+import {addHistory} from "../../reducers/historyReducer";
 
 
 const UnderlayLeft = ({ item }) => {
@@ -30,6 +31,9 @@ const UnderlayLeft = ({ item }) => {
 
     const incrementQuantity = () => {
       dispatch(addItemGardeManger(item))
+        if (!item.isContainer) {
+            dispatch(addHistory(item))
+        }
       if (Platform.OS === "android") {
         const newQty = item.quantity + 1
         ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
@@ -38,6 +42,9 @@ const UnderlayLeft = ({ item }) => {
 
     const addGroceryList = () => {
       dispatch(addItem(item))
+        if (!item.isContainer) {
+            dispatch(addHistory(item))
+        }
       if (Platform.OS === "android") {
         ToastAndroid.show('Produit ajouté à la liste d\'épicerie.', ToastAndroid.SHORT);
       }

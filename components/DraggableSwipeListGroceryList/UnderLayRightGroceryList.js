@@ -14,6 +14,7 @@ import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import {useSwipeableItemParams } from "react-native-swipeable-item";
 import { removeItem, reduceQuantity } from "../../reducers/groceryListReducer";
+import {addHistory} from "../../reducers/historyReducer";
 
 const  UnderLayRightGroceryList = ({ item }) => {
     const dispatch = useDispatch()
@@ -28,6 +29,9 @@ const  UnderLayRightGroceryList = ({ item }) => {
 
     const decrementQuantity = () => {
       dispatch(reduceQuantity(item))
+        if (!item.isContainer) {
+            dispatch(addHistory(item))
+        }
       if (Platform.OS === "android") {
         const newQty = item.quantity - 1
         ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
@@ -36,6 +40,9 @@ const  UnderLayRightGroceryList = ({ item }) => {
     const deleteProduct = () => {
         close();
         dispatch(removeItem(item))
+        if (!item.isContainer) {
+            dispatch(addHistory(item))
+        }
         if (Platform.OS === "android") {
           ToastAndroid.show('Produit supprimé de la liste d\'épicerie.', ToastAndroid.SHORT);
         }

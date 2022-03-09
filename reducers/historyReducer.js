@@ -20,10 +20,12 @@ const slice = createSlice({
             quantity: 1
           }
           //A new product is added to the top of the history list
+          console.log(action.payload + "Console log")
           state.items = [newProduct, ...newData]
         }
         //if item already exists, bump it to the top of the history
         else{
+          console.log(action.payload + "Console log")
           //pop item from array
           const i = newData[prevIndex]
           newData.splice(prevIndex, 1)

@@ -30,6 +30,9 @@ const  UnderlayRight = ({ item }) => {
 
     const decrementQuantity = () => {
       dispatch(reduceQuantity(item))
+        if (!item.isContainer) {
+            dispatch(addHistory(item))
+        }
       if (Platform.OS === "android") {
         const newQty = item.quantity - 1
         ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
