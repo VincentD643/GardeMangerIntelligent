@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text} from 'react-native'
+import {View, Text, StyleSheet, StatusBar, Dimensions} from 'react-native'
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react'
 import {persistStore} from 'redux-persist'
@@ -21,7 +21,6 @@ import BarcodeScannerCamera from "./components/BarcodeScannerCamera";
 import ProductForm from "./components/ProductForm";
 import ContainerForm from "./components/ContainerForm"
 import QRCodeScreen from "./components/QRCodeScreen"
-import Notification from "./components/Notification";
 
 export const config = {
     ...colors,
@@ -51,6 +50,13 @@ const GardeMangerScreen = () => {
     );
 }
 
+const styles = StyleSheet.create({
+  app: {
+      paddingTop: StatusBar.currentHeight,
+      backgroundColor: "#8971D0",
+      flex: 1
+  },
+});
 //https://reactnavigation.org/docs/bottom-tab-navigator/ pour les options du tab nav
 //https://icons.expo.fyi/ pour les icones, essayez d'utiliser MaterialCommunityIcons
 export default function App() {
@@ -58,35 +64,38 @@ export default function App() {
   return (
     <Provider store={store}>
       <PersistGate loading={<View><Text>Chargement...</Text></View>} persistor={persistor}>
-        <Notification/>
         <NativeBaseProvider contentContainerStyle={{ flexGrow: 1 }} theme={theme}>
+          <View style={styles.app}>
             <NavigationContainer>
-            <Tab.Navigator
-              screenOptions={{
-                headerShown: false
-              }}>
-              <Tab.Screen  name="GardeMangerScreen" component={GardeMangerScreen} options={{
-                title: 'Garde Manger',
-                tabBarIcon: ({ color, size }) => (
-                  <Icon as={MaterialCommunityIcons} name="food-apple" color={color} size={size} />
-                ),
-                }}/>
-              <Tab.Screen name="GroceryList" component={GroceryList} options={{
-                title: 'Liste d\'épicerie',
-                tabBarIcon: ({ color, size }) => (
-                  <Icon as={MaterialCommunityIcons} name="cart-outline" color={color} size={size} />
-                ),
+              <Tab.Navigator 
+                screenOptions={{
+                  headerShown: false
                 }}
-            />
-              <Tab.Screen name="History" component={History} options={{
-                title: 'Historique',
-                tabBarIcon: ({ color, size }) => (
-                  <Icon as={MaterialCommunityIcons} name="history" color={color} size={size} />
-                ),
-                }}
+                >
+                <Tab.Screen  name="GardeMangerScreen" component={GardeMangerScreen} options={{
+                  title: 'Garde Manger',
+                  tabBarIcon: ({ color, size }) => (
+                    <Icon as={MaterialCommunityIcons} name="food-apple" color={color} size={size} />
+                  ),
+                  }}/>
+                <Tab.Screen name="GroceryList" component={GroceryList} options={{
+                  title: 'Liste d\'épicerie',
+                  tabBarIcon: ({ color, size }) => (
+                    <Icon as={MaterialCommunityIcons} name="cart-outline" color={color} size={size} />
+                  ),
+                  }}
               />
-            </Tab.Navigator>
-          </NavigationContainer>
+                <Tab.Screen name="History" component={History} options={{
+                  title: 'Historique',
+                  tabBarIcon: ({ color, size }) => (
+                    <Icon as={MaterialCommunityIcons} name="history" color={color} size={size} />
+                  ),
+                  }}
+                />
+              </Tab.Navigator>
+            </NavigationContainer>
+          </View>
+            
         </NativeBaseProvider>
       </PersistGate>
     </Provider>

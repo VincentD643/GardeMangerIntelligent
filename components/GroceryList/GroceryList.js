@@ -8,20 +8,23 @@ import {
     View,
     Box,
     Menu,
-    Divider,
-    Fab, Button
+    Button,
+    Text
 } from "native-base"
 import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useSelector, useDispatch } from 'react-redux';
 import DraggableFlatList from "react-native-draggable-flatlist";
 import RowItemGroceryList from "../DraggableSwipeListGroceryList/RowItemGroceryList"
 import { setItems, removeAllItems } from "../../reducers/groceryListReducer";
-import {Platform, StyleSheet, UIManager} from "react-native";
+import {Platform, StyleSheet, UIManager, Dimensions} from "react-native";
 
 if (Platform.OS === "android") {
     UIManager.setLayoutAnimationEnabledExperimental &&
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
+
+const windowH = Dimensions.get('window').height;
+const windowW = Dimensions.get('window').width;
 
 const GroceryList = ({navigation}) => {
     const dispatch = useDispatch()
@@ -42,9 +45,7 @@ const GroceryList = ({navigation}) => {
                 ListHeaderComponent={() => {
                     return (
                         <HStack style={styles.header}>
-                            <Heading p="4" pb="3" size="lg">
-                                Liste d'épicerie
-                            </Heading>
+                            <Heading p="4" pb="3" size="lg">Garde Manger </Heading>
                             <Spacer />
                             <Pressable
                                 onPress={() => navigation.navigate('QRCodeScreen', {
@@ -66,7 +67,11 @@ const GroceryList = ({navigation}) => {
                 onDragEnd={({ data }) => dispatch(setItems(data))}
                 activationDistance={20}
             />
-            <Box position="relative" h={100} w="100%">
+            {items.length === 0 &&
+            <View style={styles.helperText}>
+                <Text>La liste d'épicerie est vide.</Text>
+            </View>}
+            <Box position="absolute" h={windowH} w={windowW}>
                 <Menu
                     closeOnSelect={true}
                     w="160"
@@ -104,14 +109,21 @@ const styles = StyleSheet.create({
     header: {
         paddingRight: 15,
     },
-    menuButton:{
-        position:"absolute",
-        borderRadius:50,
-        right:0,
-        marginRight:30,
-        top:330,
-        width: 65,
-        height: 65,
+    shareButton: {
+        top: 20,
+    },
+    helperText: {
+        flex: 1,
+        paddingTop: windowH / 3,
+        paddingLeft: windowW / 3.5
+    },
+    menuButton: {
+        position: "absolute",
+        borderRadius: 40,
+        bottom:windowH/6,
+        left:windowW-(windowW/4),
+        width: 60,
+        height: 60,
     }
 
 });

@@ -2,10 +2,6 @@ import React, { useRef, useCallback } from "react";
 import {
   Icon,
   Heading,
-  Box,
-  Fab,
-  Divider,
-  Menu,
   View,
   HStack,
   Spacer,
@@ -16,7 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   StyleSheet,
   Platform,
-  UIManager,
+  UIManager
 } from "react-native";
 import DraggableFlatList from "react-native-draggable-flatlist";
 import RowItemHistory from "../DraggableSwipeListHistory/RowItemHistory";
@@ -26,8 +22,6 @@ if (Platform.OS === "android") {
   UIManager.setLayoutAnimationEnabledExperimental &&
     UIManager.setLayoutAnimationEnabledExperimental(true);
 }
-
-
 
 const GardeManger = ({ navigation }) => {
   const dispatch = useDispatch();
@@ -87,8 +81,7 @@ const styles = StyleSheet.create({
   },
   shareButton: {
     top: 20,
-  }
-  
+  },
 });
 
 export default GardeManger;

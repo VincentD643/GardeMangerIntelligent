@@ -43,9 +43,8 @@
     "react-native": "~0.63.4",
     "react-native-draggable-flatlist": "^3.0.6",
     "react-native-fs": "^2.18.0",
-    "react-native-gesture-handler": "^2.1.1",
+    "react-native-gesture-handler": "~1.10.2",
     "react-native-get-random-values": "^1.7.2",
-    "react-native-push-notification": "^8.1.1",
     "react-native-qrcode-svg": "^6.1.2",
     "react-native-reanimated": "^2.3.1",
     "react-native-safe-area-context": "3.2.0",
@@ -62,8 +61,7 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@babel/core": "^7.9.0",
-    "react-notification-alert": "^0.0.13"
+    "@babel/core": "^7.9.0"
   },
   "bugs": {
     "url": "https://github.com/GeekyAnts/nativebase-templates/issues"
