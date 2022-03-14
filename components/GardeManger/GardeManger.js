@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     helperText: {
         flex: 1,
         paddingTop: windowH / 3,
-        paddingLeft: 30
+        paddingLeft: windowW / 8.5
     },
     searchField: {
         paddingLeft: 30,
@@ -160,7 +160,7 @@ const styles = StyleSheet.create({
     menuButton: {
         position: "absolute",
         borderRadius: 40,
-        bottom:windowH/10,
+        bottom:windowH/6,
         left:windowW-(windowW/4),
         width: 60,
         height: 60,
