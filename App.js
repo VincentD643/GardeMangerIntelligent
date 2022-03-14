@@ -53,7 +53,7 @@ const GardeMangerScreen = () => {
 const styles = StyleSheet.create({
   app: {
       paddingTop: StatusBar.currentHeight,
-      backgroundColor: "#9370DB",
+      backgroundColor: "#8971D0",
       flex: 1
   },
 });
