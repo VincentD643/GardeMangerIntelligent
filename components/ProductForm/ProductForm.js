@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useState, useEffect} from "react";
 import { useDispatch } from 'react-redux';
 import { 
     VStack, 
@@ -15,6 +15,7 @@ import {
     NumberInputStepper,
     NumberIncrementStepper,
     NumberDecrementStepper,
+    Select
 } from "native-base";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons } from "@expo/vector-icons"
@@ -23,6 +24,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { addItem, editItem } from "../../reducers/gardeMangerReducer";
 import StyledHistory from "./styled";
 import {addHistory} from "../../reducers/historyReducer";
+import { expirationByProductType } from "../../helpers/expirationHelper";
 
 const ProductForm = ({ navigation, route }) => {
     
@@ -37,7 +39,7 @@ const ProductForm = ({ navigation, route }) => {
     //product name errors
     const [errors, setErrors] = useState({});
     //expiration date
-    const [isExpirationTracked, setIsExpirationTracker] = useState(product?.expiration_date ? true : false);
+    const [isExpirationTracked, setIsExpirationTracked] = useState(product?.expiration_date ? true : false);
     const [date, setDate] = useState(
         product?.expiration_date ? new Date(product?.expiration_date) : new Date()
         );
@@ -48,8 +50,20 @@ const ProductForm = ({ navigation, route }) => {
     //nutriments
     const [nutriments, setNutriments] = useState(product?.nutriments ? product.nutriments: undefined); 
 
+    const [productType, setProductType] = useState(undefined)
+
     const dispatch = useDispatch();
     
+    useEffect(() => {
+        if (productType) {
+            const date = expirationByProductType(productType)
+            console.log("date2", date)
+            setDate(date)
+            setIsExpirationTracked(true)
+        }
+    }, [productType]);
+
+
     //Validates the form 
     const validate = () => {
         if (name === undefined) {
@@ -169,9 +183,10 @@ const ProductForm = ({ navigation, route }) => {
             <HStack alignItems="center" space={4}>
                 <Checkbox 
                     accessibilityLabel="Track expiration date ?" 
-                    onChange={(value) => setIsExpirationTracker(value)} 
+                    onChange={(value) => setIsExpirationTracked(value)} 
                     value={isExpirationTracked} 
                     defaultIsChecked={isExpirationTracked}
+                    isChecked={isExpirationTracked}
                 />
                 <Input
                     w="90%"
@@ -199,6 +214,25 @@ const ProductForm = ({ navigation, route }) => {
         )
     }
 
+    const productTypeInput = () => {
+        return (
+            <FormControl>
+            <FormControl.Label _text={{bold: true}}>Type de produit</FormControl.Label>
+            <Select selectedValue={productType} accessibilityLabel="Catégorie de produit" placeholder="Catégorie de produit" 
+              mt={1} onValueChange={itemValue => setProductType(itemValue)}>
+                  <Select.Item label="Produits laitiers" value="Produits laitiers" />
+                  <Select.Item label="Produit à base de végétaux" value="Aliments et boissons à base de végétaux" />
+                  <Select.Item label="Cannes" value="Cannes" />
+                  <Select.Item label="Amuses gueules" value="snacks" />
+                  <Select.Item label="Tartinades et produits déjeuners" value="Petit-déjeuners" />
+                  <Select.Item label="Condiments et sauces" value="Condiments" />
+                  <Select.Item label="Produits congelés" value="Frozen foods" />
+            </Select>
+            </FormControl>
+            
+        )
+    }
+
     return (
       <StyledHistory>
         <Center>
@@ -210,6 +244,7 @@ const ProductForm = ({ navigation, route }) => {
             {nameInput()}
             {quantityInput()}
             {expirationDateInput()}
+            {productTypeInput()}
             <Button onPress={onSubmit} mt="5" colorScheme="cyan">
                 Soumettre
             </Button>

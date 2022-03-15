@@ -7,6 +7,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { setItems } from '../../reducers/gardeMangerReducer';
 import {addHistory, setHistory} from '../../reducers/historyReducer';
 import { addItem } from "../../reducers/gardeMangerReducer";
+import { expirationByProductType } from '../../helpers/expirationHelper';
 
 export default function BarcodeScannerCamera({navigation, route}) {
   const [hasPermission, setHasPermission] = useState(null);
@@ -43,11 +44,25 @@ export default function BarcodeScannerCamera({navigation, route}) {
 
   const scanProduct = async (data) => {
     const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
+    const expirationDate = null;
+    const categories = [...response.data.product.categories, ...response.data.product.categories_hierarchy]
+    for (let i = 0; i < categories.length; i++) {
+      expirationDate = expirationByProductType(categories[i])
+      if (expirationDate != null) {
+        break;
+      }
+    }
+    expirationByProductType()
     const product = {
       product_name: response.data.product.product_name,
       product_url: response.data.product.image_thumb_url,
       nutriments: response.data.product.nutriments
     }
+
+    if (expirationDate != null) {
+      product = {...product, expiration_date: expirationDate}
+    }
+
     if (scanType === "completeScan") {
       navigation.navigate('ProductForm', {
         product,
