@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Icon } from "native-base";
 import { Camera } from 'expo-camera';
 import axios from 'axios'
 import { useDispatch } from 'react-redux';
+import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { v4 as uuidv4 } from 'uuid';
 import { setItems } from '../../reducers/gardeMangerReducer';
 import {addHistory, setHistory} from '../../reducers/historyReducer';
@@ -52,7 +54,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
         break;
       }
     }
-    expirationByProductType()
+
     const product = {
       product_name: response.data.product.product_name,
       product_url: response.data.product.image_thumb_url,
@@ -64,6 +66,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
     }
 
     if (scanType === "completeScan") {
+      setIsScanned(false)
       navigation.navigate('ProductForm', {
         product,
       })
@@ -77,7 +80,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
       }
       dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
       dispatch(addHistory({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
-      navigation.navigate('GardeManger')
+      setIsScanned(false)
     }
    
   }
@@ -122,6 +125,13 @@ export default function BarcodeScannerCamera({navigation, route}) {
           barCodeTypes: ['qr'],
         }}>
      </Camera>
+     <View style={styles.buttonContainer}>
+         <TouchableOpacity
+           style={styles.button}
+           onPress={() => {navigation.navigate('GardeManger')}}>
+           <Icon as={MaterialCommunityIcons} name="close-circle" color={color} size={size} />
+         </TouchableOpacity>
+       </View>
    </View>
   );
 }
