@@ -1,5 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {addHistory} from "./historyReducer";
+import {addItem as gardeMangerAddItem} from "./gardeMangerReducer";
+import {useDispatch} from "react-redux";
 // Slice
 const slice = createSlice({
     name: 'groceryList',
@@ -56,10 +57,15 @@ const slice = createSlice({
             newData.splice(prevIndex, 1)
             state.items = newData
         },
+
+        AddAllItemsToGardeManger: (state, action) =>{
+            const newData = [...state.items];
+            newData.forEach(item => gardeMangerAddItem(item));
+        }
     },
 });
 
 // Actions
-export const { setItems, addItem, editItem, removeItem, reduceQuantity, removeAllItems } = slice.actions
+export const { setItems, addItem, editItem, removeItem, reduceQuantity, removeAllItems, AddAllItemsToGardeManger } = slice.actions
 
 export default slice.reducer

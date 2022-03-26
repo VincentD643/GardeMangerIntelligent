@@ -15,7 +15,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons"
 import { useSelector, useDispatch } from 'react-redux';
 import DraggableFlatList from "react-native-draggable-flatlist";
 import RowItemGroceryList from "../DraggableSwipeListGroceryList/RowItemGroceryList"
-import { setItems, removeAllItems } from "../../reducers/groceryListReducer";
+import { setItems, removeAllItems, AddAllItemsToGardeManger } from "../../reducers/groceryListReducer";
 import {Platform, StyleSheet, UIManager, Dimensions} from "react-native";
 
 if (Platform.OS === "android") {
@@ -95,6 +95,7 @@ const GroceryList = ({navigation}) => {
                     {/*<Menu.Item value="Roboto" onPress={() => navigation.navigate('ProductForm')}>Ajout produit*/}
                     {/*    manuel</Menu.Item>*/}
                     {/*<Divider/>*/}
+                    <Menu.Item value="Arial" onPress={() => dispatch(AddAllItemsToGardeManger())}>Ajouter tout au garde manger</Menu.Item>
                     <Menu.Item value="Arial" onPress={() => dispatch(removeAllItems())}>Vider la liste d'épicerie</Menu.Item>
                 </Menu>
             </Box>

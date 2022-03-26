@@ -1,5 +1,4 @@
 import { createSlice } from '@reduxjs/toolkit'
-import {addHistory} from "./historyReducer";
 // Slice
 const slice = createSlice({
   name: 'gardeManger',
