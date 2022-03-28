@@ -96,11 +96,11 @@ const ProductForm = ({ navigation, route }) => {
         if (isExpirationTracked) {
             formData = {...formData, expiration_date: date.toString()}
         }
-        console.log("formdata", formData)
+        
         // TODO : Wrap validate
         if (!isEdit) {
             const key = uuidv4();
-            validate() ? dispatch(addItem({...formData, key: key, isContainer: false, isHidden: false})) : console.log('Validation Failed');
+            validate() ? dispatch(addItem({...formData, key: key, isContainer: false, isHidden: false, containerInfo: product?.containerInfo})) : console.log('Validation Failed');
             validate() ? dispatch(addHistory({...formData, key: key, isContainer: false, isHidden: false})) : console.log('Validation Failed');
         } else {
             validate() ? dispatch(editItem({...formData, key: product.key, isContainer: false, isHidden: false})) : console.log('Validation Failed');

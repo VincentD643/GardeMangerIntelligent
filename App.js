@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, StyleSheet, StatusBar, Dimensions} from 'react-native'
+import {View, Text, StyleSheet} from 'react-native'
 import {Provider} from 'react-redux';
 import {PersistGate} from 'redux-persist/integration/react'
 import {persistStore} from 'redux-persist'
@@ -12,6 +12,7 @@ import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {MaterialCommunityIcons} from "@expo/vector-icons"
+import Constants from 'expo-constants';
 import store from "./reducers/store"
 import colors from "./theme"
 import GardeManger from "./components/GardeManger";
@@ -52,7 +53,7 @@ const GardeMangerScreen = () => {
 
 const styles = StyleSheet.create({
   app: {
-      paddingTop: StatusBar.currentHeight,
+      paddingTop: Constants.statusBarHeight,
       backgroundColor: "#8971D0",
       flex: 1
   },

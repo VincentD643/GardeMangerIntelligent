@@ -16,6 +16,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import DraggableFlatList from "react-native-draggable-flatlist";
 import RowItemGroceryList from "../DraggableSwipeListGroceryList/RowItemGroceryList"
 import { setItems, removeAllItems } from "../../reducers/groceryListReducer";
+import { addGroceryListProducts } from "../../reducers/gardeMangerReducer"
 import {Platform, StyleSheet, UIManager, Dimensions} from "react-native";
 
 if (Platform.OS === "android") {
@@ -31,6 +32,11 @@ const GroceryList = ({navigation}) => {
     const itemRefs = useRef(new Map());
     const items = useSelector((state) => state.groceryListReducer.items)
 
+    const addAllItemsToGardeManger = () => {
+        dispatch(addGroceryListProducts(items))
+        dispatch(removeAllItems())
+    }
+
     const renderItem = useCallback((params) => {
         const RowItemProps = {
             ...params,
@@ -45,7 +51,7 @@ const GroceryList = ({navigation}) => {
                 ListHeaderComponent={() => {
                     return (
                         <HStack style={styles.header}>
-                            <Heading p="4" pb="3" size="lg">Garde Manger </Heading>
+                            <Heading p="4" pb="3" size="lg">Liste d'épicerie </Heading>
                             <Spacer />
                             <Pressable
                                 onPress={() => navigation.navigate('QRCodeScreen', {
@@ -96,6 +102,7 @@ const GroceryList = ({navigation}) => {
                     {/*    manuel</Menu.Item>*/}
                     {/*<Divider/>*/}
                     <Menu.Item value="Arial" onPress={() => dispatch(removeAllItems())}>Vider la liste d'épicerie</Menu.Item>
+                    <Menu.Item value="Arial" onPress={() => addAllItemsToGardeManger()}>Ajouter tous les produits</Menu.Item>
                 </Menu>
             </Box>
         </View>
