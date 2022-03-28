@@ -23,7 +23,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
       setHasPermission(status === 'granted');
     })();
   }, []);
-  
+
 
   const importData = (properties, jsonData) => {
       try{
@@ -46,7 +46,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
 
   const scanProduct = async (data) => {
     const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
-    const expirationDate = null;
+    let expirationDate = null;
     const categories = [...response.data.product.categories, ...response.data.product.categories_hierarchy]
     for (let i = 0; i < categories.length; i++) {
       expirationDate = expirationByProductType(categories[i])
@@ -55,7 +55,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
       }
     }
 
-    const product = {
+    let product = {
       product_name: response.data.product.product_name,
       product_url: response.data.product.image_thumb_url,
       nutriments: response.data.product.nutriments
@@ -82,7 +82,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
       dispatch(addHistory({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
       setIsScanned(false)
     }
-   
+
   }
 
   const handleBarCodeScanned = async (data) => {
@@ -96,7 +96,7 @@ export default function BarcodeScannerCamera({navigation, route}) {
         }
       } catch (e) {
         console.log("not a data import")
-        scanProduct(data)
+        await scanProduct(data)
         setIsScanned(true)
       }
     }
@@ -111,9 +111,9 @@ export default function BarcodeScannerCamera({navigation, route}) {
 
   return (
      <View style={styles.container}>
-     <Camera 
-        style={styles.camera} 
-        type={type} 
+     <Camera
+        style={styles.camera}
+        type={type}
         onBarCodeScanned={async (...args) => {
           const data = args[0].data;
           const result = JSON.stringify(data);

@@ -16,8 +16,12 @@ const slice = createSlice({
       const prevIndex = state.items.findIndex((item) => item.isContainer ? item.container_name === action.payload.container_name : item.product_name === action.payload.product_name )
       //make sure we dont add the same item twice to gardeManger, just increase quantity
       if (prevIndex >= 0) {
-        newData[prevIndex].quantity =  newData[prevIndex].quantity + 1
+        newData[prevIndex].quantity = newData[prevIndex].quantity + 1
         state.items = [...newData]
+      } else if (action.payload.containerInfo) {
+        let containerIndex = state.items.findIndex(item => item.isContainer && item.container_name === action.payload.containerInfo.container_name)
+        newData.splice(containerIndex + 1, 0, action.payload)
+        state.items = newData
       } else {
         state.items = [...newData, action.payload]
       }
@@ -112,11 +116,25 @@ const slice = createSlice({
         }
       }
       state.items = newData 
+    },
+
+    addGroceryListProducts: (state, action) => {
+      let newData = JSON.parse(JSON.stringify(action.payload))
+      let oldData = JSON.parse(JSON.stringify(state.items))
+     
+      for (const newItem of newData) {
+        let index = state.items.findIndex((item) => !item.isContainer && item.product_name === newItem.product_name )
+        if (index === -1) {
+          oldData.unshift(newItem)
+        }
+      }
+
+      state.items = oldData
     }
   },
 });
 
 // Actions
-export const { setItems, addItem, editItem, removeItem, closeOpenContainer, reduceQuantity, searchGardeManger, resetSearch } = slice.actions
+export const { setItems, addItem, editItem, removeItem, closeOpenContainer, reduceQuantity, searchGardeManger, resetSearch, addGroceryListProducts } = slice.actions
 
 export default slice.reducer

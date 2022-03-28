@@ -9,7 +9,7 @@ import {
     StyleSheet,
     ToastAndroid,
   } from "react-native";
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import Animated, { useAnimatedStyle } from "react-native-reanimated";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons"
 import {useSwipeableItemParams } from "react-native-swipeable-item";
@@ -19,6 +19,7 @@ import { addHistory } from "../../reducers/historyReducer";
 
 const  UnderlayRight = ({ item }) => {
     const dispatch = useDispatch()
+    const items = useSelector((state) => state.gardeMangerReducer.items)
     const { close } = useSwipeableItemParams()
     const { it, percentOpen } = useSwipeableItemParams();
     const animStyle = useAnimatedStyle(
@@ -27,14 +28,14 @@ const  UnderlayRight = ({ item }) => {
       }),
       [percentOpen]
     );
-
+    
     const decrementQuantity = () => {
       dispatch(reduceQuantity(item))
         if (!item.isContainer) {
             dispatch(addHistory(item))
         }
       if (Platform.OS === "android") {
-        const newQty = item.quantity - 1
+        const newQty = item.quantity > 0 ? item.quantity - 1 : item.quantity
         ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
       }
     }
@@ -44,8 +45,21 @@ const  UnderlayRight = ({ item }) => {
         if (item.isContainer && item.isClosed) {
             dispatch(closeOpenContainer(item))
         }
+        let containerFound = null
         if (!item.isContainer) {
-          dispatch(addHistory(item))
+          let products = JSON.parse(JSON.stringify(items))
+          let index = products.findIndex(product => product.product_name === item.product_name)
+          if (index >= 0) {
+            let tempArray = products.splice(0, index);
+            for (let i = tempArray.length - 1; i >= 0; i--){
+              if (tempArray[i].isContainer) {
+                containerFound = tempArray[i]
+                break
+              }
+            }
+          }
+          console.log("found", containerFound)
+          dispatch(addHistory({...item, containerInfo: containerFound}))
         }
         dispatch(removeItem(item))
         if (Platform.OS === "android") {

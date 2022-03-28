@@ -33,7 +33,7 @@ const  UnderLayRightGroceryList = ({ item }) => {
             dispatch(addHistory(item))
         }
       if (Platform.OS === "android") {
-        const newQty = item.quantity - 1
+        const newQty = item.quantity > 0 ? item.quantity - 1 : item.quantity
         ToastAndroid.show('La quantité est maintenant: ' + newQty, ToastAndroid.SHORT);
       }
     }
