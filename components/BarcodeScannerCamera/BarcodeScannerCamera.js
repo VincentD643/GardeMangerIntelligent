@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Text, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { Text, View, StyleSheet, TouchableOpacity, ToastAndroid, Platform } from 'react-native';
 import { Icon } from "native-base";
 import { Camera } from 'expo-camera';
 import axios from 'axios'
@@ -12,6 +12,7 @@ import { addItem } from "../../reducers/gardeMangerReducer";
 import { expirationByProductType } from '../../helpers/expirationHelper';
 
 export default function BarcodeScannerCamera({navigation, route}) {
+  const barcodesScanned = new Set()
   const [hasPermission, setHasPermission] = useState(null);
   const [type, setType] = useState(Camera.Constants.Type.back);
   const [isScanned, setIsScanned] = useState(false)
@@ -45,15 +46,16 @@ export default function BarcodeScannerCamera({navigation, route}) {
   }
 
   const scanProduct = async (data) => {
+    setIsScanned(true)
     const response = await axios.get(`https://world.openfoodfacts.org/api/v0/product/${data}.json`)
-    let expirationDate = null;
-    const categories = [...response.data.product.categories, ...response.data.product.categories_hierarchy]
-    for (let i = 0; i < categories.length; i++) {
-      expirationDate = expirationByProductType(categories[i])
-      if (expirationDate != null) {
-        break;
-      }
-    }
+    // let expirationDate = null;
+    // const categories = [...response?.data?.product?.categories, ...response?.data?.product?.categories_hierarchy]
+    // for (let i = 0; i < categories.length; i++) {
+    //   expirationDate = expirationByProductType(categories[i])
+    //   if (expirationDate != null) {
+    //     break;
+    //   }
+    // }
 
     let product = {
       product_name: response.data.product.product_name,
@@ -61,12 +63,11 @@ export default function BarcodeScannerCamera({navigation, route}) {
       nutriments: response.data.product.nutriments
     }
 
-    if (expirationDate != null) {
-      product = {...product, expiration_date: expirationDate}
-    }
+    // if (expirationDate != null) {
+    //   product = {...product, expiration_date: expirationDate}
+    // }
 
     if (scanType === "completeScan") {
-      setIsScanned(false)
       navigation.navigate('ProductForm', {
         product,
       })
@@ -78,26 +79,27 @@ export default function BarcodeScannerCamera({navigation, route}) {
         isContainer: false,
         isHidden: false,
       }
+      if (Platform.OS === "android") {
+        ToastAndroid.show(`Le produit: ${product.product_name} a été ajouté.`, 1);
+      }
       dispatch(addItem({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
       dispatch(addHistory({...formData, key: uuidv4(), isContainer: false, isHidden: false}))
-      setIsScanned(false)
     }
-
+    await new Promise(resolve => setTimeout(resolve, 3000));
+    setIsScanned(false)
   }
 
   const handleBarCodeScanned = async (data) => {
-    if (!isScanned) {
-      try {
-        let jsonData = JSON.parse(JSON.parse(data))
-        const properties = jsonData[jsonData.length - 1]
-        if (properties?.isImport) {
-          importData(properties, jsonData)
-          setIsScanned(true)
-        }
-      } catch (e) {
-        console.log("not a data import")
+    try {
+      let jsonData = JSON.parse(JSON.parse(data))
+      const properties = jsonData[jsonData.length - 1]
+      if (properties?.isImport) {
+        importData(properties, jsonData)
+      }
+    } catch (e) {
+      console.log("not a data import")
+      if (!isScanned) {
         await scanProduct(data)
-        setIsScanned(true)
       }
     }
   };
@@ -110,29 +112,30 @@ export default function BarcodeScannerCamera({navigation, route}) {
   }
 
   return (
-     <View style={styles.container}>
-     <Camera
-        style={styles.camera}
-        type={type}
-        onBarCodeScanned={async (...args) => {
-          const data = args[0].data;
-          const result = JSON.stringify(data);
-          handleBarCodeScanned(result)
-          }
-          //</View>navigation.navigate('your_next_screen',{result});
-        }
-        barCodeScannerSettings={{
-          barCodeTypes: ['qr'],
-        }}>
-     </Camera>
-     <View style={styles.buttonContainer}>
-         <TouchableOpacity
-           style={styles.button}
-           onPress={() => {navigation.navigate('GardeManger')}}>
-           <Icon as={MaterialCommunityIcons} name="close-circle" color={color} size={size} />
-         </TouchableOpacity>
-       </View>
-   </View>
+      <View style={styles.container}>
+        <Camera
+            style={styles.camera}
+            type={type}
+            onBarCodeScanned={async (...args) => {
+              const data = args[0].data;
+              const result = JSON.stringify(data);
+              handleBarCodeScanned(result)
+            }
+              //</View>navigation.navigate('your_next_screen',{result});
+            }
+            barCodeScannerSettings={{
+              barCodeTypes: ['qr'],
+            }}>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+                style={styles.button}
+                onPress={() => {navigation.navigate('GardeManger')}}>
+              <Icon as={MaterialCommunityIcons} name="close-circle" size={24} />
+            </TouchableOpacity>
+          </View>
+        </Camera>
+
+      </View>
   );
 }
 
@@ -153,6 +156,7 @@ const styles = StyleSheet.create({
     flex: 0.1,
     alignSelf: 'flex-end',
     alignItems: 'center',
+    paddingLeft: 30
   },
   text: {
     fontSize: 18,
