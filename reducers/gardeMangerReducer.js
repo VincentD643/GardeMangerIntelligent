@@ -121,9 +121,16 @@ const slice = createSlice({
     addGroceryListProducts: (state, action) => {
       let newData = JSON.parse(JSON.stringify(action.payload))
       let oldData = JSON.parse(JSON.stringify(state.items))
-     
+      for (let i = 0; i < oldData.length; i++) {
+        for (let j = 0; j < newData.length; j++) {
+          if (oldData[i].key === newData[j].key) {
+            oldData[i].quantity += newData[j].quantity 
+          }
+        }
+      }
+
       for (const newItem of newData) {
-        let index = state.items.findIndex((item) => !item.isContainer && item.product_name === newItem.product_name )
+        let index = oldData.findIndex((item) => !item.isContainer && item.key === newItem.key )
         if (index === -1) {
           oldData.unshift(newItem)
         }
