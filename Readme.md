@@ -1,3 +1,7 @@
 # GardeMangerIntelligent
 
-PSA: Scanning will not work on emulator anymore. Camera package has been changed since there was issues with barcode scanner and it kept crashing the app. It works fine on an android phone itself tho. 
+To run app locally on emulator/Android phone: Yarn android
+
+To run app through Expo Go App: Expo start
+
+To build Android APK: expo build:android -t apk
